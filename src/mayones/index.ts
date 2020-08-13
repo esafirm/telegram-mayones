@@ -15,16 +15,16 @@ bot.command('play', ctx => {
   return ctx.reply('Memulai game DOTA…')
 })
 
-bot.on('text', ctx => {
-  return ctx.reply('Naon')
-})
-
 bot.hears('kamu', ctx => {
   return ctx.reply('adalah ANJI(g)')
 })
 
 bot.on('inline_query', ctx => {
   return InlineAction(ctx)
+})
+
+bot.on('text', ctx => {
+  return ctx.reply('Naon')
 })
 
 exports.handler = async (event: { body: string }) => {
