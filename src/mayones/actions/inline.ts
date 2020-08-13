@@ -1,19 +1,13 @@
 import { Context } from 'telegraf'
 
 export default async (ctx: Context) => {
-	const search = (ctx.inlineQuery.query || "")
-	const answer = []
-	const tocamos = [2, 3, 4, 5, 6, 7, 8, 9, 10]
-	tocamos.forEach(function (tocamos) {
-		answer.push({
-			id: tocamos,
-			title: tocamos + " (" + search + " entre " + tocamos + ")",
-			type: 'article',
-			input_message_content: {
-				message_text: "Tocais cada uno a " + (Math.round(search as unknown as number / tocamos) * 100) / 100 + " (" + search + " entre " + tocamos + ")",
-				parse_mode: 'HTML'
-			}
-		})
-	})
+	const answer = [{
+		type: 'article',
+		title: 'Aing lagi testing',
+		id: 'loading',
+		input_message_content: {
+			message_text: 'Gitu loooo'
+		}
+	}]
 	return ctx.answerInlineQuery(answer)
 }

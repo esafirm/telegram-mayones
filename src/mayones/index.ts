@@ -15,11 +15,15 @@ bot.on('text', ctx => {
   return ctx.reply('Naon')
 })
 
+bot.command('play', ctx => {
+  return ctx.reply('Memulai game DOTA…')
+})
+
 bot.on('inline_query', ctx => {
   return InlineAction(ctx)
 })
 
-exports.handler = async event => {
+exports.handler = async (event: { body: string }) => {
   await bot.handleUpdate(JSON.parse(event.body));
   return { statusCode: 200, body: '' };
 }
