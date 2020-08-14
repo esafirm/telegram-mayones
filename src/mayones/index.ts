@@ -12,11 +12,11 @@ bot.start(ctx => {
   return StartAction(ctx)
 })
 
-bot.command('play', ctx => {
-  console.log('Request to play:', ctx.me)
-  console.log('Logging:', ctx.chat)
+bot.command('play', async ctx => {
+  console.log('Request to play:', ctx.message)
+  console.log('Logging:', ctx)
 
-  newUser(ctx.chat.id)
+  await newUser(ctx.chat.id)
 
   return ctx.reply('Memulai game DOTA…')
 })
