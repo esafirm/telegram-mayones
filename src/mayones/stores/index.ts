@@ -39,15 +39,14 @@ export async function newUser(from: any): Promise<FCollection<User>> | null {
 }
 
 export async function getGameRoom(roomId: any): Promise<FCollection<Room>> {
-  return new Promise((res, rej) => {
+  return new Promise(resolve => {
     client
       .query(q.Get(q.Match(q.Index(Indexes.RoomIdIndex), roomId)))
       .then(result => {
-        res(result as FCollection<Room>);
+        resolve(result as FCollection<Room>);
       })
-      .catch(err => {
-        console.error(err);
-        rej(null);
+      .catch(() => {
+        resolve(null);
       });
   });
 }
