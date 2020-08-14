@@ -8,6 +8,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.15",
     "@types/node": "^10.14.10",
+    "copyfiles": "^2.3.0",
     "jest": "~24.8.0",
     "prettier": "~1.18.2",
     "rimraf": "^2.6.3",
@@ -22,6 +23,7 @@
     "check": "npx ts-node src/mayones/check/index.ts",
     "clean": "rimraf coverage build tmp",
     "build": "tsc -p tsconfig.release.json",
+    "postbuild": "cp src/mayones/words/words.txt functions/mayones/words/",
     "deploy": "npm install && npm run build",
     "build:watch": "tsc -w -p tsconfig.release.json",
     "lint": "tslint -t stylish --project \"tsconfig.json\"",
