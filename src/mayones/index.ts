@@ -13,11 +13,11 @@ bot.start(ctx => {
   return StartAction(ctx);
 });
 
-bot.command('play', async ctx => {
+bot.command('join', async ctx => {
   return JoinAction(ctx);
 });
 
-bot.command('start', async ctx => {
+bot.command('play', async ctx => {
   return PlayAction(ctx);
 });
 
