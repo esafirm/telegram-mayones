@@ -7,7 +7,7 @@ const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
 const logger = new TelegrafLogger();
 
-bot.use(logger.midlleware());
+bot.use(logger.middleware());
 
 bot.start(ctx => {
   return StartAction(ctx);
