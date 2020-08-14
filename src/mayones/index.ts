@@ -1,4 +1,5 @@
 import Telegraf from 'telegraf'
+import { newUser } from './stores'
 
 import {
   StartAction,
@@ -12,6 +13,11 @@ bot.start(ctx => {
 })
 
 bot.command('play', ctx => {
+  console.log('Request to play:', ctx.me)
+  console.log('Logging:', ctx.chat)
+
+  newUser(ctx.chat.id)
+
   return ctx.reply('Memulai game DOTA…')
 })
 
@@ -23,8 +29,8 @@ bot.on('inline_query', ctx => {
   return InlineAction(ctx)
 })
 
-bot.on('text', ctx => {
-  return ctx.reply('Naon')
+bot.on('chosen_inline_result', ({ chosenInlineResult }) => {
+  console.log('chosen inline result', chosenInlineResult)
 })
 
 exports.handler = async (event: { body: string }) => {
