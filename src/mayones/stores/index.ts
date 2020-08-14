@@ -2,19 +2,19 @@ import * as FaundaDb from 'faunadb';
 
 const Indexes = {
 	UserIdIndex: 'UserIdIndex',
-	RoomIdIndex: 'RoomIdIndex'
-}
+	RoomIdIndex: 'RoomIdIndex',
+};
 
 const Collections = {
 	User: 'user',
-	Room: 'room'
-}
+	Room: 'room',
+};
 
 type Room = {
-	roomId: number,
-	active: boolean,
-	players: Array<string>
-}
+	roomId: number;
+	active: boolean;
+	players: Array<string>;
+};
 
 const client = new FaundaDb.Client({
 	secret: process.env.FAUNA_TOKEN,
@@ -24,56 +24,45 @@ const q = FaundaDb.query;
 
 export async function newUser(from: any) {
 	const isExist = await client.query(
-		q.Exists(q.Match(
-			q.Index(Indexes.UserIdIndex), from.id
-		))
-	)
-	if (isExist) return Promise.resolve()
+		q.Exists(q.Match(q.Index(Indexes.UserIdIndex), from.id)),
+	);
+	if (isExist) return Promise.resolve();
 
-	return client.query(
-		q.Create(
-			q.Collection(Collections.User),
-			{ data: from },
-		)
-	)
+	return client.query(q.Create(q.Collection(Collections.User), { data: from }));
 }
 
 export async function getGameRoom(roomId: any): Promise<Room> {
-	return client.query(
-		q.Get(
-			q.Match(q.Index(Indexes.RoomIdIndex), roomId)
-		)
-	) as Promise<Room>
+	return new Promise((res, rej) => {
+		client
+			.query(q.Get(q.Match(q.Index(Indexes.RoomIdIndex), roomId)))
+			.then(result => {
+				res(result as Room);
+			})
+			.then(() => rej(null));
+	});
 }
 
 export async function createGameRoom(id: any, playerRef: any) {
 	return client.query(
-		q.Create(
-			q.Collection(Collections.Room),
-			{
-				data: {
-					roomId: id,
-					active: false,
-					players: [playerRef]
-				}
-			}
-		)
-	)
+		q.Create(q.Collection(Collections.Room), {
+			data: {
+				roomId: id,
+				active: false,
+				players: [playerRef],
+			},
+		}),
+	);
 }
 
 export async function addPlayerToRoom(roomId: number, playerRef: any) {
 	return client.query(
 		q.Update(
-			q.Select(
-				"ref", q.Get(q.Match(
-					q.Index(Indexes.RoomIdIndex), roomId
-				))
-			),
+			q.Select('ref', q.Get(q.Match(q.Index(Indexes.RoomIdIndex), roomId))),
 			{
 				data: {
-					players: playerRef
-				}
-			}
-		)
-	)
+					players: playerRef,
+				},
+			},
+		),
+	);
 }
