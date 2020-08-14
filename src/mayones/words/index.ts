@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
+import { join } from 'path';
 
-const text = readFileSync('./src/mayones/words/words.txt', 'utf-8');
+const text = readFileSync(join(__dirname, 'words.txt'), 'utf-8');
 const textByLine = text.split('\n');
 
 function getRandomInt(max: number) {
