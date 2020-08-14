@@ -75,3 +75,20 @@ export async function addPlayerToRoom(roomId: number, playerRef: any) {
     ),
   );
 }
+
+export async function setGameRoomActive(roomId: number, isActive: boolean) {
+  return client.query(
+    q.Update(selectRoomById(roomId), {
+      data: {
+        active: isActive,
+      },
+    }),
+  );
+}
+
+/* Queries */
+/* ------------------------------------------ */
+
+function selectRoomById(roomId: number) {
+  return q.Select('ref', q.Get(q.Match(q.Index(Indexes.RoomIdIndex), roomId)));
+}
