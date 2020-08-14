@@ -5,6 +5,7 @@ import {
   createGameRoom,
   getGameRoom,
   Room,
+  setPlayerToRoom,
 } from '../stores';
 
 import { User } from 'telegraf/typings/telegram-types';
@@ -24,6 +25,9 @@ export default async (ctx: Context) => {
   if (room.data.active) {
     return ctx.reply('Sedang ada game yang berlangsung. Tungguin dlu ya ~');
   }
+
+  const newPlayers = [...room.data.players, from];
+  await setPlayerToRoom(groupId, newPlayers);
 
   return ctx.reply(createMessage(room.data));
 };

@@ -63,13 +63,13 @@ export async function createGameRoom(id: any, user: User) {
   );
 }
 
-export async function addPlayerToRoom(roomId: number, playerRef: any) {
+export async function setPlayerToRoom(roomId: number, players: Array<User>) {
   return client.query(
     q.Update(
       q.Select('ref', q.Get(q.Match(q.Index(Indexes.RoomIdIndex), roomId))),
       {
         data: {
-          players: playerRef,
+          players: players,
         },
       },
     ),
