@@ -34,7 +34,6 @@ bot.on('chosen_inline_result', ({ chosenInlineResult }) => {
 });
 
 exports.handler = async (event: { body: string }) => {
-  const status = await bot.handleUpdate(JSON.parse(event.body));
-  console.log('status', status);
+  await bot.handleUpdate(JSON.parse(event.body));
   return { statusCode: 200, body: '' };
 };
