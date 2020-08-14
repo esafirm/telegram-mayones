@@ -1,13 +1,17 @@
 import { Context } from 'telegraf'
-import { newUser, createGameRoom } from '../stores'
+import { newUser, createGameRoom, getGameRoom } from '../stores'
 
 export default async (ctx: Context) => {
 	const from = ctx.from
-	const newUserRes = await newUser(from)
-	const res = await createGameRoom(ctx.chat.id)
+	const groupId = ctx.chat.id
+	const user = await newUser(from)
 
-	console.log('Fauna response: ', newUserRes)
-	console.log('Fauna response: ', res)
+	const room = await getGameRoom(groupId)
+	console.log('Room:', room)
+
+	if (room == null) {
+		await createGameRoom(ctx.chat.id, user)
+	}
 
 	const message = `${from.username} mau memulai game DOTA nih, yang mau ikutan klik /play juga yaa`
 

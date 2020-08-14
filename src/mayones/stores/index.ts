@@ -1,24 +1,71 @@
 import * as FaundaDb from 'faunadb';
 
-const client = new FaundaDb.Client({ secret: process.env.FAUNA_TOKEN });
+const Indexes = {
+	UserIdIndex: 'UserIdIndex',
+	RoomIdIndex: 'RoomIdIndex'
+}
+
+const Collections = {
+	User: 'user',
+	Room: 'room'
+}
+
+type Room = {
+	roomId: number,
+	active: boolean,
+	players: Array<string>
+}
+
+const client = new FaundaDb.Client({
+	secret: process.env.FAUNA_TOKEN,
+	timeout: 2000,
+});
 const q = FaundaDb.query;
 
 export async function newUser(from: any) {
 	return client.query(
 		q.Create(
-			q.Collection('user'),
+			q.Collection(Collections.User),
 			{ data: from },
 		)
 	)
 }
 
-export async function createGameRoom(id: any) {
+export async function getGameRoom(roomId: any): Promise<Room> {
+	return client.query(
+		q.Get(
+			q.Match(q.Index(Indexes.RoomIdIndex), roomId)
+		)
+	) as Promise<Room>
+}
+
+export async function createGameRoom(id: any, playerRef: any) {
 	return client.query(
 		q.Create(
-			q.Collection('room'),
+			q.Collection(Collections.Room),
 			{
-				telegramGroupId: id,
-				active: true
+				data: {
+					roomId: id,
+					active: false,
+					players: [playerRef]
+				}
+			}
+		)
+	)
+}
+
+export async function addPlayerToRoom(roomId: number, playerRef: any) {
+	return client.query(
+		q.Update(
+			q.Select(
+				"ref", q.Get(q.Match(
+					q.Index(Indexes.RoomIdIndex), roomId
+				))
+			),
+			{
+				data: {
+					players: playerRef
+				}
 			}
 		)
 	)
