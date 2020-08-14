@@ -1,9 +1,9 @@
 import Telegraf from 'telegraf'
-import { newUser } from './stores'
 
 import {
   StartAction,
-  InlineAction
+  InlineAction,
+  PlayAction
 } from './actions'
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN)
@@ -13,12 +13,7 @@ bot.start(ctx => {
 })
 
 bot.command('play', async ctx => {
-  console.log('Request to play:', ctx.message)
-  console.log('Logging:', ctx)
-
-  await newUser(ctx.chat.id)
-
-  return ctx.reply('Memulai game DOTA…')
+  return PlayAction(ctx)
 })
 
 bot.hears('kamu', ctx => {
