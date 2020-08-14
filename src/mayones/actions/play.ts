@@ -14,7 +14,7 @@ export default async (ctx: Context) => {
   await setGameRoomActive(groupId, true);
 
   await ctx.reply('Game dimulai!');
-  return ctx.reply(nextQuestion());
+  return ctx.replyWithMarkdown(nextQuestion());
 };
 
 function shuffleWord(word: string) {
@@ -27,5 +27,5 @@ function shuffleWord(word: string) {
 }
 
 function nextQuestion() {
-  return `Tebak, kata apa ini? ${shuffleWord(getRandomWord())}`;
+  return `Tebak, kata apa ini? *${shuffleWord(getRandomWord()).toUpperCase()}*`;
 }
