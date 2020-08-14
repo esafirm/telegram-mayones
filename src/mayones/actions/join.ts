@@ -21,6 +21,10 @@ export default async (ctx: Context) => {
     await createGameRoom(groupId, from);
   }
 
+  if (room.data.active) {
+    return ctx.reply('Sedang ada game yang berlangsung. Tungguin dlu ya ~');
+  }
+
   return ctx.reply(createMessage(room.data));
 };
 
