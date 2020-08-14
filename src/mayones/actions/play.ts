@@ -1,23 +1,35 @@
 import { Context } from 'telegraf';
+
 import {
-	newUser as createUserIfNotExist,
-	createGameRoom,
-	getGameRoom,
+  newUser as createUserIfNotExist,
+  createGameRoom,
+  getGameRoom,
+  Room,
 } from '../stores';
 
+import { User } from 'telegraf/typings/telegram-types';
+
 export default async (ctx: Context) => {
-	const from = ctx.from;
-	const groupId = ctx.chat.id;
-	const user = await createUserIfNotExist(from);
+  const from = ctx.from as User;
+  const groupId = ctx.chat.id;
 
-	const room = await getGameRoom(groupId);
-	console.log('Room:', room);
+  await createUserIfNotExist(from);
 
-	if (room == null) {
-		await createGameRoom(ctx.chat.id, user);
-	}
+  const room = await getGameRoom(groupId);
 
-	const message = `${from.username} mau memulai game DOTA nih, yang mau ikutan klik /play juga yaa`;
+  if (room == null) {
+    await createGameRoom(groupId, from);
+  }
 
-	return ctx.reply(message);
+  return ctx.reply(createMessage(room.data));
 };
+
+function createMessage(room: Room): string {
+  const playerList = room.players.map(p => p.username).join('\n');
+
+  return `DOTA siap dimulai. Pemain:
+	${playerList}
+
+	Klik /play untuk ikutan!
+	`;
+}

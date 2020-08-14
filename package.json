@@ -19,7 +19,7 @@
     "typescript": "~3.5.0"
   },
   "scripts": {
-    "start": "npm run build && node functions/mayones/index.js",
+    "check": "npx ts-node src/mayones/check/index.ts",
     "clean": "rimraf coverage build tmp",
     "build": "tsc -p tsconfig.release.json",
     "deploy": "npm install && npm run build",
