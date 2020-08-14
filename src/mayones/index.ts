@@ -1,8 +1,13 @@
 import Telegraf from 'telegraf';
+import * as TelegrafLogger from 'telegraf-logger';
 
 import { StartAction, InlineAction, JoinAction, PlayAction } from './actions';
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
+
+const logger = new TelegrafLogger();
+
+bot.use(logger.midlleware());
 
 bot.start(ctx => {
   return StartAction(ctx);
