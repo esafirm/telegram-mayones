@@ -1,6 +1,6 @@
 import Telegraf from 'telegraf';
 
-import { StartAction, InlineAction, PlayAction } from './actions';
+import { StartAction, InlineAction, JoinAction, PlayAction } from './actions';
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
@@ -9,6 +9,10 @@ bot.start(ctx => {
 });
 
 bot.command('play', async ctx => {
+  return JoinAction(ctx);
+});
+
+bot.command('start', async ctx => {
   return PlayAction(ctx);
 });
 
