@@ -1,19 +1,23 @@
-import { Context } from 'telegraf'
-import { newUser, createGameRoom, getGameRoom } from '../stores'
+import { Context } from 'telegraf';
+import {
+	newUser as createUserIfNotExist,
+	createGameRoom,
+	getGameRoom,
+} from '../stores';
 
 export default async (ctx: Context) => {
-	const from = ctx.from
-	const groupId = ctx.chat.id
-	const user = await newUser(from)
+	const from = ctx.from;
+	const groupId = ctx.chat.id;
+	const user = await createUserIfNotExist(from);
 
-	const room = await getGameRoom(groupId)
-	console.log('Room:', room)
+	const room = await getGameRoom(groupId);
+	console.log('Room:', room);
 
 	if (room == null) {
-		await createGameRoom(ctx.chat.id, user)
+		await createGameRoom(ctx.chat.id, user);
 	}
 
-	const message = `${from.username} mau memulai game DOTA nih, yang mau ikutan klik /play juga yaa`
+	const message = `${from.username} mau memulai game DOTA nih, yang mau ikutan klik /play juga yaa`;
 
-	return ctx.reply(message)
-}
+	return ctx.reply(message);
+};

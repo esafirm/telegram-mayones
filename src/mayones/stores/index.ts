@@ -23,6 +23,13 @@ const client = new FaundaDb.Client({
 const q = FaundaDb.query;
 
 export async function newUser(from: any) {
+	const isExist = await client.query(
+		q.Exists(q.Match(
+			q.Index(Indexes.UserIdIndex), from.id
+		))
+	)
+	if (isExist) return Promise.resolve()
+
 	return client.query(
 		q.Create(
 			q.Collection(Collections.User),
