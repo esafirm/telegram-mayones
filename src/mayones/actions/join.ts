@@ -26,7 +26,8 @@ export default async (ctx: Context) => {
     return ctx.reply('Sedang ada game yang berlangsung. Tungguin dlu ya ~');
   }
 
-  const newPlayers = [...room.data.players, from];
+  const filtered = room.data.players.filter(p => p.id != from.id);
+  const newPlayers = [...filtered, from];
   await setPlayerToRoom(groupId, newPlayers);
 
   return ctx.reply(createMessage(room.data));
