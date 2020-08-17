@@ -4,7 +4,6 @@ import {
   newUser as createUserIfNotExist,
   createGameRoom,
   getGameRoom,
-  Room,
   setPlayerToRoom,
 } from '../stores';
 

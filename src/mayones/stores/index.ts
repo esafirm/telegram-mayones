@@ -4,11 +4,15 @@ import { User } from 'telegraf/typings/telegram-types';
 const Indexes = {
   UserIdIndex: 'UserIdIndex',
   RoomIdIndex: 'RoomIdIndex',
+  LastSessionIndex: 'LastSessionIndex',
+  LastQuestionIndex: 'QuestionIndex',
 };
 
 const Collections = {
   User: 'user',
   Room: 'room',
+  Session: 'session',
+  Quiz: 'question',
 };
 
 type FCollection<T> = {
@@ -21,6 +25,22 @@ export type Room = {
   roomId: number;
   active: boolean;
   players: Array<User>;
+};
+
+export type QuizSession = {
+  roomId: number;
+  session: number;
+};
+
+export type Quiz = {
+  sessionId: number;
+  question: string;
+  answer: string;
+};
+
+export type SimpleQuiz = {
+  question: string;
+  answer: string;
 };
 
 const client = new FaundaDb.Client({
@@ -83,6 +103,45 @@ export async function setGameRoomActive(roomId: number, isActive: boolean) {
         active: isActive,
       },
     }),
+  );
+}
+
+export async function createSession(
+  roomId: number,
+): Promise<FCollection<QuizSession>> {
+  return client.query(
+    q.Create(q.Collection(Collections.Session), {
+      data: {
+        roomId: roomId,
+        session: Date.now(),
+      },
+    }),
+  );
+}
+
+export async function createQuestion(session: QuizSession, quiz: SimpleQuiz) {
+  return client.query(
+    q.Create(q.Collection(Collections.Quiz), {
+      data: {
+        sessionId: session.roomId + session.session,
+        answer: quiz.answer,
+        question: quiz.question,
+      },
+    }),
+  );
+}
+
+export async function getLastQuestion(
+  groupId: number,
+): Promise<FCollection<Quiz>> {
+  const lastSession: FCollection<QuizSession> = await client.query(
+    q.Get(q.Match(q.Index(Indexes.LastSessionIndex), groupId)),
+  );
+  const { data } = lastSession;
+  const sessionId = data.roomId + data.session;
+
+  return client.query(
+    q.Get(q.Match(q.Index(Indexes.LastQuestionIndex), sessionId)),
   );
 }
 

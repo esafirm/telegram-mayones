@@ -1,7 +1,14 @@
 import Telegraf from 'telegraf';
 import * as TelegrafLogger from 'telegraf-logger';
 
-import { StartAction, InlineAction, JoinAction, PlayAction } from './actions';
+import {
+  StartAction,
+  InlineAction,
+  JoinAction,
+  PlayAction,
+  EndAction,
+  AnswerAction,
+} from './actions';
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
@@ -21,6 +28,10 @@ bot.command('play', async ctx => {
   return PlayAction(ctx);
 });
 
+bot.command('end', ctx => {
+  return EndAction(ctx);
+});
+
 bot.hears('kamu', ctx => {
   return ctx.reply('adalah ANJI(g)');
 });
@@ -31,6 +42,11 @@ bot.on('inline_query', ctx => {
 
 bot.on('chosen_inline_result', ({ chosenInlineResult }) => {
   console.log('chosen inline result', chosenInlineResult);
+});
+
+bot.on('text', ctx => {
+  console.log('==>', ctx);
+  return AnswerAction(ctx);
 });
 
 exports.handler = async (event: { body: string }) => {
