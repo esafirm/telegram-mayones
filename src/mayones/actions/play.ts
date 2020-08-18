@@ -8,12 +8,18 @@ import {
   SimpleQuiz,
 } from '../stores';
 
+const MINMUM_PLAYER = 2;
+
 export default async (ctx: Context) => {
-  const { chat } = ctx;
+  const { chat, from } = ctx;
   const groupId = chat.id;
 
+  const isAdmin = from.username === '@esafirm';
+  console.log('isAdmin', isAdmin);
+  console.log('username', from.username);
+
   const room = await getGameRoom(groupId);
-  if (room.data.players.length < 2) {
+  if (!isAdmin && room.data.players.length < MINMUM_PLAYER) {
     return ctx.reply('Game bisa dijalankan dengan minimal peserta 2 orang');
   }
 
