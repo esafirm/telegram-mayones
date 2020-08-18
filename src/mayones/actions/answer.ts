@@ -1,6 +1,10 @@
 import { Context } from 'telegraf';
 import { getGameRoom, getLastQuestion } from '../stores';
 
+function logAnswer(log: string) {
+  console.log(`Answer mode => ${log}`);
+}
+
 export default async (ctx: Context) => {
   const { chat } = ctx;
   const groupId = chat.id;
@@ -9,6 +13,7 @@ export default async (ctx: Context) => {
   const room = await getGameRoom(groupId);
 
   if (!room.data.active) {
+    logAnswer('Game sedang tidak aktif');
     return Promise.resolve();
   }
 

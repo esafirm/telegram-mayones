@@ -1,5 +1,6 @@
 import * as FaundaDb from 'faunadb';
 import { User } from 'telegraf/typings/telegram-types';
+import { group } from 'console';
 
 const Indexes = {
   UserIdIndex: 'UserIdIndex',
@@ -134,12 +135,15 @@ export async function createQuestion(session: QuizSession, quiz: SimpleQuiz) {
 export async function getLastQuestion(
   groupId: number,
 ): Promise<FCollection<Quiz>> {
+  console.log('Get last session for', groupId)
+
   const lastSession: FCollection<QuizSession> = await client.query(
     q.Get(q.Match(q.Index(Indexes.LastSessionIndex), groupId)),
   );
   const { data } = lastSession;
   const sessionId = data.roomId + data.session;
 
+  console.log('Get last question for', sessionId)
   return client.query(
     q.Get(q.Match(q.Index(Indexes.LastQuestionIndex), sessionId)),
   );

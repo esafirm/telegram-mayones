@@ -45,7 +45,6 @@ bot.on('chosen_inline_result', ({ chosenInlineResult }) => {
 });
 
 bot.on('text', ctx => {
-  console.log('==>', ctx);
   return AnswerAction(ctx);
 });
 
