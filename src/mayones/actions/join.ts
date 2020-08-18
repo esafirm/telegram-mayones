@@ -29,11 +29,13 @@ export default async (ctx: Context) => {
   const newPlayers = [...filtered, from];
   await setPlayerToRoom(groupId, newPlayers);
 
-  return ctx.reply(createMessage(newPlayers));
+  return ctx.replyWithMarkdown(createMessage(newPlayers));
 };
 
 function createMessage(players: Array<User>): string {
-  const playerList = players.map(p => p.username).join('\n');
+  const playerList = players.map((p, index) => {
+    `*${index + 1}. ${p.first_name}* (@${p.username})`
+  }).join('\n');
 
   return `DOTA siap dimulai. Pemain:
 	${playerList}
