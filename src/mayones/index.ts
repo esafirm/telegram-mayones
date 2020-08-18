@@ -8,7 +8,8 @@ import {
   PlayAction,
   EndAction,
   AnswerAction,
-  ScoreAction
+  ScoreAction,
+  SkipAction,
 } from './actions';
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
@@ -33,13 +34,17 @@ bot.command('hajar', async ctx => {
   return PlayAction(ctx);
 });
 
+bot.command('skip', async ctx => {
+  return SkipAction(ctx);
+});
+
 bot.command('end', ctx => {
   return EndAction(ctx);
 });
 
 bot.command('score', ctx => {
-  return ScoreAction(ctx)
-})
+  return ScoreAction(ctx);
+});
 
 bot.hears('kamu', ctx => {
   return ctx.reply('adalah ANJI(g)');
