@@ -15,7 +15,7 @@ export default class ScoreStore {
   findScore(sessionId: number): Promise<FCollection<Score> | null> {
     return new Promise(resolve => {
       this.client
-        .query(q.Match(q.Index(Indexes.ScoreIndex), sessionId))
+        .query(q.Get(q.Match(q.Index(Indexes.ScoreIndex), sessionId)))
         .then(res => {
           resolve(res as FCollection<Score>);
         })
@@ -63,7 +63,5 @@ export default class ScoreStore {
     return this.client.query(
       q.Update(q.Match(q.Index(Indexes.ScoreIndex), sessionId), newScore),
     );
-
-    this.client.query(q.Match(q.Index(Indexes.ScoreIndex), sessionId));
   }
 }

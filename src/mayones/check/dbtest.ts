@@ -1,4 +1,4 @@
-import { getGameRoom, newUser } from '../stores';
+import { getGameRoom, newUser, scoreStore } from '../stores';
 
 async function start() {
   /* Room */
@@ -20,6 +20,12 @@ async function start() {
     .catch(err => {
       console.error(err);
     });
+
+  /* Score */
+  /* ------------------------------------------ */
+
+  const score = await scoreStore.findScore(1111);
+  console.log('Find score', score.data);
 }
 
 start();
