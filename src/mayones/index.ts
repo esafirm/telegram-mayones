@@ -29,6 +29,10 @@ bot.command('play', async ctx => {
   return PlayAction(ctx);
 });
 
+bot.command('hajar', async ctx => {
+  return PlayAction(ctx);
+});
+
 bot.command('end', ctx => {
   return EndAction(ctx);
 });
