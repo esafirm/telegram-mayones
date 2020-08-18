@@ -19,7 +19,6 @@ export async function getFormattedCurrentScore(groupId: number) {
   const keyArray = Object.keys(data.scores);
 
   if (keyArray.length === 0) {
-    console.log('data', data)
     return 'Masih belum ada score';
   }
 
@@ -28,7 +27,7 @@ export async function getFormattedCurrentScore(groupId: number) {
     .sort((a, b) => b.score - a.score)
     .map(
       (score, index) =>
-        `${index + 1}. ${score.username} ${score.score} ${getTitle(index)}`,
+        `${index + 1}. ${score.username} (${score.score}) ${getTitle(index)}`,
     )
     .join('\n');
 
@@ -37,5 +36,5 @@ export async function getFormattedCurrentScore(groupId: number) {
 
 export default async (ctx: Context) => {
   const groupId = ctx.chat.id;
-  return ctx.reply(await getFormattedCurrentScore(groupId));
+  return ctx.replyWithMarkdown(await getFormattedCurrentScore(groupId));
 };
