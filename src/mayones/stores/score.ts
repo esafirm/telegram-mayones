@@ -1,6 +1,7 @@
 import * as FaundaDb from 'faunadb';
 import { User } from 'telegraf/typings/telegram-types';
-import { Indexes, Collections, FCollection, Score } from './types';
+import { Indexes, Collections, FCollection, Score, QuizSession } from './types';
+import { sessionId } from '../actions/common/utils';
 
 const q = FaundaDb.query;
 
@@ -29,8 +30,8 @@ export default class ScoreStore {
       q.Create(q.Collection(Collections.Score), {
         data: {
           sessionId: sessionId,
-          player: [],
-        },
+          scores: {},
+        } as Score,
       }),
     );
   }
@@ -43,8 +44,8 @@ export default class ScoreStore {
     return currentScore;
   }
 
-  async giveScore(from: User, sessionId: number) {
-    const currentScore = await this.findOrCreateScore(sessionId);
+  async giveScore(from: User, session: QuizSession) {
+    const currentScore = await this.findOrCreateScore(sessionId(session));
     console.log('current score', currentScore);
 
     const currentPlayerScore = currentScore.data.scores[from.username];

@@ -1,5 +1,10 @@
 import { Context } from 'telegraf';
-import { getGameRoom, getLastQuestion, getLastSession } from '../stores';
+import {
+  getGameRoom,
+  getLastQuestion,
+  getLastSession,
+  scoreStore,
+} from '../stores';
 import { goToNextQuiz } from './common/quiz';
 
 function logAnswer(log: string) {
@@ -8,7 +13,10 @@ function logAnswer(log: string) {
 
 async function processRightAnswer(ctx: Context, groupId: number) {
   ctx.reply('Yes jawaban kamu benar');
+
   const lastSession = await getLastSession(groupId);
+  await scoreStore.giveScore(ctx.from, lastSession.data);
+
   return goToNextQuiz(ctx, lastSession.data);
 }
 
