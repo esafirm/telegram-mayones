@@ -1,6 +1,7 @@
 import { Context } from 'telegraf';
 import { getRandomWord } from '../../words';
-import { createQuestion, SimpleQuiz, QuizSession } from '../../stores';
+import { createQuestion } from '../../stores';
+import { SimpleQuiz, QuizSession } from '../../stores/types';
 
 function shuffleWord(word: string) {
   return word
