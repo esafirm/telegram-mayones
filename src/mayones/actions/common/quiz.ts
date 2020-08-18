@@ -12,9 +12,9 @@ function shuffleWord(word: string) {
     .join('');
 }
 
-async function nextQuiz(): Promise<SimpleQuiz> {
+export async function nextQuiz(): Promise<SimpleQuiz> {
   const configuration = await configStore.getConfiguration();
-  const max = configuration.data.levelDesc[configuration.data.level];
+  const max = configuration.data.levelDesc[configuration.data.level].length;
   const levelFilter = (text: string) => text.length <= max;
 
   const answer = getRandomWord(levelFilter).toUpperCase();

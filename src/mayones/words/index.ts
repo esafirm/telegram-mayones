@@ -9,6 +9,6 @@ function getRandomInt(max: number) {
 }
 
 export function getRandomWord(filter: (text: string) => boolean) {
-  const filtered = textByLine.filter(filter);
+  const filtered = filter ? textByLine.filter(filter) : textByLine;
   return filtered[getRandomInt(filtered.length - 1)];
 }

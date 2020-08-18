@@ -1,7 +1,14 @@
 import { getGameRoom, newUser, scoreStore } from '../stores';
 import { getFormattedCurrentScore } from '../actions/score';
+import { nextQuiz } from '../actions/common/quiz';
 
 async function start() {
+  /* Quiz */
+  /* ------------------------------------------ */
+
+  const nQuiz = await nextQuiz()
+  console.log('Next Quiz:', nQuiz)
+
   /* Room */
   /* ------------------------------------------ */
 
