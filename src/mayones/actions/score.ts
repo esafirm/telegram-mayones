@@ -1,10 +1,10 @@
 import { getLastSession, scoreStore } from '../stores';
 import { Context } from 'telegraf';
+import { sessionId } from './common/utils';
 
 async function getCurrentScore(groupId: number) {
   const { data } = await getLastSession(groupId);
-  const sessionId = data.roomId + data.session;
-  return scoreStore.findOrCreateScore(sessionId);
+  return scoreStore.findOrCreateScore(sessionId(data));
 }
 
 function getTitle(index: number) {
@@ -14,13 +14,13 @@ function getTitle(index: number) {
   return '';
 }
 
-async function getFormattedCurrentScore(groupId: number) {
+export async function getFormattedCurrentScore(groupId: number) {
   const { data } = await getCurrentScore(groupId);
-  const keyArray = Array.from(data.scores.keys());
+  const keyArray = Object.keys(data.scores);
   const scoreObj = keyArray.map(k => ({ username: k, score: data.scores[k] }));
 
   const message = scoreObj
-    .sort((a, b) => a.score - b.score)
+    .sort((a, b) => b.score - a.score)
     .map(
       (score, index) =>
         `${index + 1}. ${score.username} ${score.score} ${getTitle(index)}`,

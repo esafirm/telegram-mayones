@@ -1,5 +1,5 @@
 import { QuizSession } from '../../stores/types';
 
 export function sessionId(session: QuizSession) {
-  return session.roomId + session.session;
+  return parseInt(`${Math.abs(session.roomId)}${session.session}`);
 }

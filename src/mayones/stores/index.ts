@@ -90,7 +90,7 @@ export async function createQuestion(session: QuizSession, quiz: SimpleQuiz) {
   return client.query(
     q.Create(q.Collection(Collections.Quiz), {
       data: {
-        sessionId: session.roomId + session.session,
+        sessionId: sessionId(session),
         answer: quiz.answer,
         question: quiz.question,
       },
@@ -133,4 +133,5 @@ function selectRoomById(roomId: number) {
 /* ------------------------------------------ */
 
 import ScoreStore from './score';
+import { sessionId } from '../actions/common/utils';
 export const scoreStore = new ScoreStore(client);

@@ -1,4 +1,5 @@
 import { getGameRoom, newUser, scoreStore } from '../stores';
+import { getFormattedCurrentScore } from '../actions/score';
 
 async function start() {
   /* Room */
@@ -26,6 +27,9 @@ async function start() {
 
   const score = await scoreStore.findScore(1111);
   console.log('Find score', score.data);
+
+  const formattedScore = await getFormattedCurrentScore(1111)
+  console.log('Formatted score', formattedScore)
 }
 
 start();
