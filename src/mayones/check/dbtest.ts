@@ -25,11 +25,35 @@ async function start() {
   /* Score */
   /* ------------------------------------------ */
 
-  const score = await scoreStore.findScore("1111");
+  const score = await scoreStore.findScore('1111');
   console.log('Find score', score.data);
 
-  const formattedScore = await getFormattedCurrentScore(1111)
-  console.log('Formatted score', formattedScore)
+  try {
+    const giveScore = await scoreStore.giveScore(
+      {
+        username: 'esafirm',
+        first_name: 'esa',
+        is_bot: false,
+        id: 1,
+        language_code: null,
+        last_name: 'last',
+      },
+      {
+        roomId: 1111,
+        session: 1,
+      },
+    );
+    console.log('Give score:', giveScore);
+  } catch (err) {
+    console.error(err);
+  }
+
+  try {
+    const formattedScore = await getFormattedCurrentScore(1111);
+    console.log('Formatted score', formattedScore);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 start();

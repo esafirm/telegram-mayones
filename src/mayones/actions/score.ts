@@ -19,6 +19,7 @@ export async function getFormattedCurrentScore(groupId: number) {
   const keyArray = Object.keys(data.scores);
 
   if (keyArray.length === 0) {
+    console.log('data', data)
     return 'Masih belum ada score';
   }
 

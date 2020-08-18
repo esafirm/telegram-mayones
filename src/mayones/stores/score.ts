@@ -46,11 +46,8 @@ export default class ScoreStore {
 
   async giveScore(from: User, session: QuizSession) {
     const currentScore = await this.findOrCreateScore(sessionId(session));
-    console.log('current score', currentScore);
-
     const currentPlayerScore = currentScore.data.scores[from.username];
-    const newPlayerScore =
-      currentPlayerScore === null ? 1 : currentPlayerScore + 1;
+    const newPlayerScore = currentPlayerScore ? currentPlayerScore + 1 : 1;
 
     const newScore = {
       ...currentScore.data,
@@ -62,8 +59,13 @@ export default class ScoreStore {
 
     return this.client.query(
       q.Update(
-        q.Match(q.Index(Indexes.ScoreIndex), sessionId(session)),
-        newScore,
+        q.Select(
+          'ref',
+          q.Get(q.Match(q.Index(Indexes.ScoreIndex), sessionId(session))),
+        ),
+        {
+          data: newScore,
+        },
       ),
     );
   }
