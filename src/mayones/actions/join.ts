@@ -33,9 +33,9 @@ export default async (ctx: Context) => {
 };
 
 function createMessage(players: Array<User>): string {
-  const playerList = players.map((p, index) => {
-    `*${index + 1}. ${p.first_name}* (@${p.username})`
-  }).join('\n');
+  const playerList = players
+    .map((p, index) => `*${index + 1}. ${p.first_name}* (@${p.username})`)
+    .join('\n');
 
   return `DOTA siap dimulai. Pemain:
 	${playerList}
