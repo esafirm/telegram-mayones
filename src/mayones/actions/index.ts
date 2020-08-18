@@ -4,6 +4,7 @@ import join from './join';
 import play from './play';
 import answer from './answer';
 import end from './end';
+import score from './score';
 
 export {
   start as StartAction,
@@ -11,5 +12,6 @@ export {
   join as JoinAction,
   play as PlayAction,
   end as EndAction,
-  answer as AnswerAction
+  answer as AnswerAction,
+  score as ScoreAction,
 };

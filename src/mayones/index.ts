@@ -8,6 +8,7 @@ import {
   PlayAction,
   EndAction,
   AnswerAction,
+  ScoreAction
 } from './actions';
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
@@ -31,6 +32,10 @@ bot.command('play', async ctx => {
 bot.command('end', ctx => {
   return EndAction(ctx);
 });
+
+bot.command('score', ctx => {
+  return ScoreAction(ctx)
+})
 
 bot.hears('kamu', ctx => {
   return ctx.reply('adalah ANJI(g)');
