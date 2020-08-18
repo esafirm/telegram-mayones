@@ -8,6 +8,7 @@ function getRandomInt(max: number) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-export function getRandomWord() {
-  return textByLine[getRandomInt(textByLine.length - 1)];
+export function getRandomWord(filter: (text: string) => boolean) {
+  const filtered = textByLine.filter(filter);
+  return filtered[getRandomInt(filtered.length - 1)];
 }

@@ -8,8 +8,13 @@ async function getCurrentScore(groupId: number) {
 }
 
 function getTitle(index: number) {
-  if (index == 0) {
-    return '- *DEWA JUDI*';
+  switch (index) {
+    case 0:
+      return '- *DEWA JUDI*';
+    case 1:
+      return '- *IVAN LANIN*';
+    case 2:
+      return '- *BUKA KBBI.COM';
   }
   return '';
 }

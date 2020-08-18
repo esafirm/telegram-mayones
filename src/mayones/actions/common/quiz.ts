@@ -1,6 +1,6 @@
 import { Context } from 'telegraf';
 import { getRandomWord } from '../../words';
-import { createQuestion } from '../../stores';
+import { createQuestion, configStore } from '../../stores';
 import { SimpleQuiz, QuizSession } from '../../stores/types';
 
 function shuffleWord(word: string) {
@@ -12,8 +12,12 @@ function shuffleWord(word: string) {
     .join('');
 }
 
-function nextQuiz(): SimpleQuiz {
-  const answer = getRandomWord().toUpperCase();
+async function nextQuiz(): Promise<SimpleQuiz> {
+  const configuration = await configStore.getConfiguration();
+  const max = configuration.data.levelDesc[configuration.data.level];
+  const levelFilter = (text: string) => text.length <= max;
+
+  const answer = getRandomWord(levelFilter).toUpperCase();
   const question = shuffleWord(answer);
   return {
     question: question,
@@ -22,7 +26,7 @@ function nextQuiz(): SimpleQuiz {
 }
 
 export async function goToNextQuiz(ctx: Context, session: QuizSession) {
-  const quiz = nextQuiz();
+  const quiz = await nextQuiz();
   await createQuestion(session, quiz);
 
   await ctx.reply('Game dimulai!');

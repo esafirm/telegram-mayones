@@ -128,5 +128,7 @@ function selectRoomById(roomId: number) {
 /* ------------------------------------------ */
 
 import ScoreStore from './score';
+import { ConfigStore } from './config';
 import { sessionId } from '../actions/common/utils';
 export const scoreStore = new ScoreStore(client);
+export const configStore = new ConfigStore(client);
