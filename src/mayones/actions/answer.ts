@@ -44,7 +44,7 @@ export default async (ctx: Context) => {
   }
 
   const lastQuestion = await getLastQuestion(groupId);
-  if (lastQuestion.data.answer.trim().toUpperCase() === answer) {
+  if (lastQuestion.data.answer === answer.trim().toUpperCase()) {
     return processRightAnswer(ctx, groupId);
   }
   return processWrongAnswer(ctx);
