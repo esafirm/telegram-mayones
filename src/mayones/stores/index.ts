@@ -1,6 +1,5 @@
 import * as FaundaDb from 'faunadb';
 import { User } from 'telegraf/typings/telegram-types';
-import { group } from 'console';
 
 const Indexes = {
   UserIdIndex: 'UserIdIndex',
