@@ -12,7 +12,7 @@ export default class ScoreStore {
     this.client = client;
   }
 
-  findScore(sessionId: number): Promise<FCollection<Score> | null> {
+  findScore(sessionId: string): Promise<FCollection<Score> | null> {
     return new Promise(resolve => {
       this.client
         .query(q.Get(q.Match(q.Index(Indexes.ScoreIndex), sessionId)))
@@ -25,7 +25,7 @@ export default class ScoreStore {
     });
   }
 
-  createScore(sessionId: number): Promise<FCollection<Score>> {
+  createScore(sessionId: string): Promise<FCollection<Score>> {
     return this.client.query(
       q.Create(q.Collection(Collections.Score), {
         data: {
@@ -36,7 +36,7 @@ export default class ScoreStore {
     );
   }
 
-  async findOrCreateScore(sessionId: number): Promise<FCollection<Score>> {
+  async findOrCreateScore(sessionId: string): Promise<FCollection<Score>> {
     const currentScore = await this.findScore(sessionId);
     if (currentScore == null) {
       return await this.createScore(sessionId);

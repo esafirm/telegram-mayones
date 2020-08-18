@@ -34,7 +34,7 @@ export type QuizSession = {
 };
 
 export type Quiz = {
-  sessionId: number;
+  sessionId: string;
   question: string;
   answer: string;
 };
@@ -45,6 +45,6 @@ export type SimpleQuiz = {
 };
 
 export type Score = {
-  sessionId: number
+  sessionId: string
   scores: Map<string, number>;
 };

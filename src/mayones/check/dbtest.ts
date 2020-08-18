@@ -25,7 +25,7 @@ async function start() {
   /* Score */
   /* ------------------------------------------ */
 
-  const score = await scoreStore.findScore(1111);
+  const score = await scoreStore.findScore("1111");
   console.log('Find score', score.data);
 
   const formattedScore = await getFormattedCurrentScore(1111)
