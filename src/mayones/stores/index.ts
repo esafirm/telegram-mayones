@@ -112,14 +112,9 @@ export async function getLastQuestion(
   console.log('Get last session for', groupId);
 
   const lastSession = await getLastSession(groupId);
-
-  const { data } = lastSession;
-  const sessionId = data.roomId + data.session;
-
-  console.log('Get last question for', sessionId);
-  return client.query(
-    q.Get(q.Match(q.Index(Indexes.LastQuestionIndex), sessionId)),
-  );
+  const sId = sessionId(lastSession.data);
+  console.log('Get last question for', sId);
+  return client.query(q.Get(q.Match(q.Index(Indexes.LastQuestionIndex), sId)));
 }
 
 /* Queries */

@@ -17,8 +17,12 @@ function getTitle(index: number) {
 export async function getFormattedCurrentScore(groupId: number) {
   const { data } = await getCurrentScore(groupId);
   const keyArray = Object.keys(data.scores);
-  const scoreObj = keyArray.map(k => ({ username: k, score: data.scores[k] }));
 
+  if (keyArray.length === 0) {
+    return 'Masih belum ada score';
+  }
+
+  const scoreObj = keyArray.map(k => ({ username: k, score: data.scores[k] }));
   const message = scoreObj
     .sort((a, b) => b.score - a.score)
     .map(
