@@ -1,12 +1,6 @@
 import { Context } from 'telegraf';
-import { getRandomWord } from '../words';
-import {
-  getGameRoom,
-  setGameRoomActive,
-  createSession,
-  createQuestion,
-  SimpleQuiz,
-} from '../stores';
+import { getGameRoom, setGameRoomActive, createSession } from '../stores';
+import { goToNextQuiz } from './common/quiz';
 
 const MINMUM_PLAYER = 2;
 
@@ -30,27 +24,5 @@ export default async (ctx: Context) => {
   await setGameRoomActive(groupId, true);
   const session = await createSession(groupId);
 
-  const quiz = nextQuiz();
-  await createQuestion(session.data, quiz);
-
-  await ctx.reply('Game dimulai!');
-  return ctx.replyWithMarkdown(`Ayo tebak ini kata apa? *${quiz.question}*`);
+  return goToNextQuiz(ctx, session.data);
 };
-
-function shuffleWord(word: string) {
-  return word
-    .split('')
-    .map(a => ({ sort: Math.random(), value: a }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(a => a.value)
-    .join('');
-}
-
-function nextQuiz(): SimpleQuiz {
-  const answer = getRandomWord().toUpperCase();
-  const question = shuffleWord(answer);
-  return {
-    question: question,
-    answer: answer,
-  };
-}

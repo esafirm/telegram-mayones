@@ -37,9 +37,5 @@ function createMessage(players: Array<User>): string {
     .map((p, index) => `*${index + 1}. ${p.first_name}* (@${p.username})`)
     .join('\n');
 
-  return `DOTA siap dimulai. Pemain:
-	${playerList}
-
-	Klik /join untuk ikutan!
-	`;
+  return `DOTA siap dimulai. Pemain:\n${playerList}\nKlik /join untuk ikutan!`;
 }

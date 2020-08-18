@@ -4,7 +4,7 @@ import { User } from 'telegraf/typings/telegram-types';
 const Indexes = {
   UserIdIndex: 'UserIdIndex',
   RoomIdIndex: 'RoomIdIndex',
-  LastSessionIndex: 'LastSessionIndex',
+  LastSessionIndex: 'SessionIndex',
   LastQuestionIndex: 'QuestionIndex',
 };
 
@@ -131,18 +131,25 @@ export async function createQuestion(session: QuizSession, quiz: SimpleQuiz) {
   );
 }
 
+export function getLastSession(
+  groupId: number,
+): Promise<FCollection<QuizSession>> {
+  return client.query(
+    q.Get(q.Match(q.Index(Indexes.LastSessionIndex), groupId)),
+  );
+}
+
 export async function getLastQuestion(
   groupId: number,
 ): Promise<FCollection<Quiz>> {
-  console.log('Get last session for', groupId)
+  console.log('Get last session for', groupId);
 
-  const lastSession: FCollection<QuizSession> = await client.query(
-    q.Get(q.Match(q.Index(Indexes.LastSessionIndex), groupId)),
-  );
+  const lastSession = await getLastSession(groupId);
+
   const { data } = lastSession;
   const sessionId = data.roomId + data.session;
 
-  console.log('Get last question for', sessionId)
+  console.log('Get last question for', sessionId);
   return client.query(
     q.Get(q.Match(q.Index(Indexes.LastQuestionIndex), sessionId)),
   );
