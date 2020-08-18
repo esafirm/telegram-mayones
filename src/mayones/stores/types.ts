@@ -6,7 +6,7 @@ export const Indexes = {
   LastSessionIndex: 'SessionIndex',
   LastQuestionIndex: 'QuestionIndex',
   ScoreIndex: 'ScoreIndex',
-  Configuration: 'ConfiguartionIndex'
+  Configuration: 'ConfigurationIndex'
 };
 
 export const Collections = {
