@@ -29,6 +29,11 @@ export default async (ctx: Context) => {
   const groupId = chat.id;
   const answer = ctx.message.text;
 
+  if (answer.includes('/') || answer.includes('@')) {
+    logAnswer('Answer should not be handled here');
+    return Promise.resolve();
+  }
+
   const room = await getGameRoom(groupId);
 
   if (!room.data.active) {

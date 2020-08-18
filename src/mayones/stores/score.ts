@@ -61,7 +61,10 @@ export default class ScoreStore {
     };
 
     return this.client.query(
-      q.Update(q.Match(q.Index(Indexes.ScoreIndex), sessionId), newScore),
+      q.Update(
+        q.Match(q.Index(Indexes.ScoreIndex), sessionId(session)),
+        newScore,
+      ),
     );
   }
 }
