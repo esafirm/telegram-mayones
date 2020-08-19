@@ -14,7 +14,7 @@ function getTitle(index: number) {
     case 1:
       return '- *IVAN LANIN*';
     case 2:
-      return '- *BUKA KBBI.COM';
+      return '- *BUKA KBBI.COM*';
   }
   return '';
 }
