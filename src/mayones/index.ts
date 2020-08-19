@@ -7,9 +7,9 @@ import {
   JoinAction,
   PlayAction,
   EndAction,
-  AnswerAction,
   ScoreAction,
   SkipAction,
+  AdvancedAction,
 } from './actions';
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
@@ -63,7 +63,7 @@ bot.on('chosen_inline_result', ({ chosenInlineResult }) => {
 });
 
 bot.on('text', ctx => {
-  return AnswerAction(ctx);
+  return AdvancedAction(ctx);
 });
 
 exports.handler = async (event: { body: string }) => {

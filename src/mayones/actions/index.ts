@@ -6,6 +6,32 @@ import answer from './answer';
 import end from './end';
 import score from './score';
 import skip from './skip';
+import submit from './submit';
+
+// text '/start@yourbot Hello world!'
+// command 'start'
+// bot 'yourbot'
+// args 'Hello world!'
+// splitArgs ['Hello', 'world!']
+export type CommandPart = {
+  text: string;
+  command: string;
+  bot: string;
+  args: string;
+  splitArgs: Array<string>;
+};
+
+const Commands = {
+  Submit: 'submit',
+};
+
+const AdvancedAction = ctx => {
+  const commandPart = ctx.state.command as CommandPart;
+  if (commandPart.command === Commands.Submit) {
+    return submit(ctx);
+  }
+  return answer(ctx);
+};
 
 export {
   start as StartAction,
@@ -16,4 +42,5 @@ export {
   answer as AnswerAction,
   score as ScoreAction,
   skip as SkipAction,
+  AdvancedAction,
 };

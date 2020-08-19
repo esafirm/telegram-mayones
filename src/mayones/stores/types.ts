@@ -7,6 +7,7 @@ export const Indexes = {
   LastQuestionIndex: 'QuestionIndex',
   ScoreIndex: 'ScoreIndex',
   Configuration: 'ConfigurationIndex',
+  UserSubmit: 'UserSubmitIndex'
 };
 
 export const Collections = {
@@ -15,6 +16,7 @@ export const Collections = {
   Session: 'session',
   Quiz: 'question',
   Score: 'score',
+  UserSubmit: 'user_submit'
 };
 
 export type FCollection<T> = {

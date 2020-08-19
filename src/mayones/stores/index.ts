@@ -10,6 +10,7 @@ import {
   Quiz,
   GameType,
 } from './types';
+import { sessionId } from '../actions/common/utils';
 
 const client = new FaundaDb.Client({
   secret: process.env.FAUNA_TOKEN,
@@ -131,7 +132,10 @@ function selectRoomById(roomId: number) {
 /* ------------------------------------------ */
 
 import ScoreStore from './score';
-import { ConfigStore } from './config';
-import { sessionId } from '../actions/common/utils';
 export const scoreStore = new ScoreStore(client);
+
+import { ConfigStore } from './config';
 export const configStore = new ConfigStore(client);
+
+import { UserSubmitStore } from './user_submit';
+export const userSubmitStore = new UserSubmitStore(client);
