@@ -70,6 +70,10 @@ bot.on('text', ctx => {
 });
 
 exports.handler = async (event: { body: string }) => {
-  await bot.handleUpdate(JSON.parse(event.body));
+  try {
+    await bot.handleUpdate(JSON.parse(event.body));
+  } catch (err) {
+    console.error(err);
+  }
   return { statusCode: 200, body: '' };
 };

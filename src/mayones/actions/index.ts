@@ -9,11 +9,13 @@ import skip from './skip';
 import submit from './submit';
 import sambungkata from './sambungkata';
 
-// text '/start@yourbot Hello world!'
-// command 'start'
-// bot 'yourbot'
-// args 'Hello world!'
-// splitArgs ['Hello', 'world!']
+/**
+ * text '/start@yourbot Hello world!'
+ * command 'start'
+ * bot 'yourbot'
+ * args 'Hello world!'
+ * splitArgs ['Hello', 'world!']
+ */
 export type CommandPart = {
   text: string;
   command: string;
