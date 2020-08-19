@@ -1,5 +1,6 @@
 import Telegraf from 'telegraf';
 import * as TelegrafLogger from 'telegraf-logger';
+import * as commandParts from 'telegraf-command-parts';
 
 import {
   StartAction,
@@ -17,6 +18,7 @@ const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 const logger = new TelegrafLogger();
 
 bot.use(logger.middleware());
+bot.use(commandParts());
 
 bot.start(ctx => {
   return StartAction(ctx);
