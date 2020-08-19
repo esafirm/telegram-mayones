@@ -1,7 +1,7 @@
 import { Context } from 'telegraf';
 import { getRandomWord } from '../../words';
 import { createQuestion, configStore } from '../../stores';
-import { SimpleQuiz, QuizSession, Quiz } from '../../stores/types';
+import { SimpleQuiz, QuizSession } from '../../stores/types';
 
 function shuffleWord(word: string) {
   return word
@@ -53,7 +53,8 @@ export async function goToNextQuiz(ctx: Context, session: QuizSession) {
 }
 
 export async function goToNextSambung(ctx: Context, session: QuizSession) {
-  const baseWord = await getRandomWord(() => true).toUpperCase();
+  console.log('session', session);
+  const baseWord = getRandomWord(() => true).toUpperCase();
   const question = getLastLetter(baseWord);
 
   const message = `Mulai: [${baseWord}](http://kbbi.kamus.pelajar.id/arti-kata/${baseWord}))\n${question}...\nSilakan mulai!`;

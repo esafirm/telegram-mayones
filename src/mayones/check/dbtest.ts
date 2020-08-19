@@ -6,8 +6,8 @@ async function start() {
   /* Quiz */
   /* ------------------------------------------ */
 
-  const nQuiz = await nextQuiz()
-  console.log('Next Quiz:', nQuiz)
+  const nQuiz = await nextQuiz();
+  console.log('Next Quiz:', nQuiz);
 
   /* Room */
   /* ------------------------------------------ */
@@ -48,6 +48,7 @@ async function start() {
       {
         roomId: 1111,
         session: 1,
+        gameType: 'ANAGRAM',
       },
     );
     console.log('Give score:', giveScore);
