@@ -11,6 +11,7 @@ import {
   ScoreAction,
   SkipAction,
   AdvancedAction,
+  SambungKataAction,
 } from './actions';
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
@@ -33,7 +34,7 @@ bot.command('play', async ctx => {
 });
 
 bot.command('sambung_play', async ctx => {
-  return PlayAction(ctx);
+  return SambungKataAction(ctx);
 });
 
 bot.command('hajar', async ctx => {

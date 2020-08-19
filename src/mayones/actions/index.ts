@@ -7,6 +7,7 @@ import end from './end';
 import score from './score';
 import skip from './skip';
 import submit from './submit';
+import sambungkata from './sambungkata';
 
 // text '/start@yourbot Hello world!'
 // command 'start'
@@ -26,6 +27,8 @@ const Commands = {
 };
 
 const AdvancedAction = ctx => {
+  console.log('state', ctx.state);
+
   const commandPart = ctx.state.command as CommandPart;
   if (commandPart.command === Commands.Submit) {
     return submit(ctx);
@@ -42,5 +45,6 @@ export {
   answer as AnswerAction,
   score as ScoreAction,
   skip as SkipAction,
+  sambungkata as SambungKataAction,
   AdvancedAction,
 };

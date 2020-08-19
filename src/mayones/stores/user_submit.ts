@@ -16,10 +16,15 @@ export class UserSubmitStore {
   }
 
   getUserSubmit(word: string): Promise<FCollection<UserSubmit>> {
-    return this.client.query(q.Get(q.Match(q.Index(Indexes.UserSubmit), word)));
+    return new Promise(resolve => {
+      this.client
+        .query(q.Get(q.Match(q.Index(Indexes.UserSubmit), word)))
+        .then(res => resolve(res as FCollection<UserSubmit>))
+        .catch(() => resolve(null));
+    });
   }
 
-  submit(word: string) {
+  private createUserSubmit(word: string) {
     this.client.query(
       q.Create(q.Collection(Collections.UserSubmit), {
         data: {
@@ -28,5 +33,32 @@ export class UserSubmitStore {
         },
       }),
     );
+  }
+
+  private addCountForUserSubmit(currentSubmit: UserSubmit) {
+    const newData = {
+      ...currentSubmit,
+      count: currentSubmit.count + 1,
+    };
+    this.client.query(
+      q.Update(
+        q.Select(
+          'ref',
+          q.Get(q.Match(q.Index(Indexes.ScoreIndex), currentSubmit.word)),
+        ),
+        {
+          data: newData,
+        },
+      ),
+    );
+  }
+
+  async submit(word: string) {
+    const currentSubmit = await this.getUserSubmit(word);
+    if (currentSubmit) {
+      this.addCountForUserSubmit(currentSubmit.data);
+    } else {
+      this.createUserSubmit(word);
+    }
   }
 }
