@@ -26,15 +26,28 @@ export type CommandPart = {
 
 const Commands = {
   Submit: 'submit',
+  Play: 'play',
+  Join: 'join',
+  Score: 'score',
 };
 
 const AdvancedAction = ctx => {
-  console.log('state', ctx.state);
-
   const commandPart = ctx.state.command as CommandPart;
-  if (commandPart.command === Commands.Submit) {
+  const command = commandPart ? commandPart.command.toLowerCase() : '';
+
+  if (command === Commands.Submit) {
     return submit(ctx);
   }
+  if (command === Commands.Join) {
+    return join(ctx);
+  }
+  if (command === Commands.Score) {
+    return score(ctx);
+  }
+  if (command === Commands.Play) {
+    return play(ctx);
+  }
+
   return answer(ctx);
 };
 
