@@ -30,6 +30,10 @@ bot.command('play', async ctx => {
   return PlayAction(ctx);
 });
 
+bot.command('sambung_play', async ctx => {
+  return PlayAction(ctx);
+});
+
 bot.command('hajar', async ctx => {
   return PlayAction(ctx);
 });

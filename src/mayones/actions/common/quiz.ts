@@ -1,7 +1,7 @@
 import { Context } from 'telegraf';
 import { getRandomWord } from '../../words';
 import { createQuestion, configStore } from '../../stores';
-import { SimpleQuiz, QuizSession } from '../../stores/types';
+import { SimpleQuiz, QuizSession, Quiz } from '../../stores/types';
 
 function shuffleWord(word: string) {
   return word
@@ -10,6 +10,24 @@ function shuffleWord(word: string) {
     .sort((a, b) => a.sort - b.sort)
     .map(a => a.value)
     .join('');
+}
+
+const CONSONANT = ['A', 'I', 'U', 'E', 'O'];
+const MAX_LAST_LATTER = 2;
+
+function getLastLetter(word: string) {
+  if (word.length == MAX_LAST_LATTER) {
+    return word;
+  }
+  const question = word.substring(word.length - MAX_LAST_LATTER, word.length);
+  const shouldReturnOneLetter = question
+    .split('')
+    .every(letter => CONSONANT.includes(letter));
+
+  if (shouldReturnOneLetter) {
+    return word.substring(word.length - 1, word.length);
+  }
+  return question;
 }
 
 export async function nextQuiz(): Promise<SimpleQuiz> {
@@ -32,4 +50,13 @@ export async function goToNextQuiz(ctx: Context, session: QuizSession) {
   await ctx.reply('Game dimulai!');
 
   return ctx.replyWithMarkdown(`Ayo tebak ini kata apa? *${quiz.question}*`);
+}
+
+export async function goToNextSambung(ctx: Context, session: QuizSession) {
+  const baseWord = await getRandomWord(() => true).toUpperCase();
+  const question = getLastLetter(baseWord);
+
+  const message = `Mulai: [${baseWord}](http://kbbi.kamus.pelajar.id/arti-kata/${baseWord}))\n${question}...\nSilakan mulai!`;
+
+  return ctx.replyWithMarkdown(message);
 }

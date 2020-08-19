@@ -8,6 +8,7 @@ import {
   QuizSession,
   SimpleQuiz,
   Quiz,
+  GameType,
 } from './types';
 
 const client = new FaundaDb.Client({
@@ -75,12 +76,14 @@ export async function setGameRoomActive(roomId: number, isActive: boolean) {
 
 export async function createSession(
   roomId: number,
+  gameType: GameType,
 ): Promise<FCollection<QuizSession>> {
   return client.query(
     q.Create(q.Collection(Collections.Session), {
       data: {
         roomId: roomId,
         session: Date.now(),
+        gameType: gameType,
       },
     }),
   );

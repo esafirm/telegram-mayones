@@ -6,7 +6,7 @@ export const Indexes = {
   LastSessionIndex: 'SessionIndex',
   LastQuestionIndex: 'QuestionIndex',
   ScoreIndex: 'ScoreIndex',
-  Configuration: 'ConfigurationIndex'
+  Configuration: 'ConfigurationIndex',
 };
 
 export const Collections = {
@@ -29,9 +29,12 @@ export type Room = {
   players: Array<User>;
 };
 
+export type GameType = 'SAMBUNG' | 'ANAGRAM';
+
 export type QuizSession = {
   roomId: number;
   session: number;
+  gameType: GameType;
 };
 
 export type Quiz = {
@@ -46,6 +49,6 @@ export type SimpleQuiz = {
 };
 
 export type Score = {
-  sessionId: string
+  sessionId: string;
   scores: Map<string, number>;
 };
