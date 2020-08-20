@@ -39,6 +39,13 @@ export type QuizSession = {
   gameType: GameType;
 };
 
+export type SambungKataQuiz = {
+  sesionId: string;
+  question: string;
+  baseWord: string;
+  answer: string;
+};
+
 export type Quiz = {
   sessionId: string;
   question: string;

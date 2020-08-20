@@ -1,7 +1,8 @@
 import { Context } from 'telegraf';
 import { getRandomWord } from '../../words';
 import { createQuestion, configStore } from '../../stores';
-import { SimpleQuiz, QuizSession } from '../../stores/types';
+import { SimpleQuiz, QuizSession, SambungKataQuiz } from '../../stores/types';
+import { sessionId } from './utils';
 
 function shuffleWord(word: string) {
   return word
@@ -53,11 +54,19 @@ export async function goToNextQuiz(ctx: Context, session: QuizSession) {
 }
 
 export async function goToNextSambung(ctx: Context, session: QuizSession) {
-  console.log('session', session);
   const baseWord = getRandomWord(() => true).toUpperCase();
   const question = getLastLetter(baseWord);
 
-  const message = `Mulai: [${baseWord}](http://kbbi.kamus.pelajar.id/arti-kata/${baseWord}))\n${question}...\nSilakan mulai!`;
+  const quiz: SambungKataQuiz = {
+    question: question,
+    baseWord: baseWord,
+    sesionId: sessionId(session),
+    answer: '',
+  };
+
+  await createQuestion(session, quiz);
+
+  const message = `Mulai: [${baseWord}](http://kbbi.kamus.pelajar.id/arti-kata/${baseWord})\n\n*${question}*...\n\nSilakan mulai!`;
 
   return ctx.replyWithMarkdown(message);
 }

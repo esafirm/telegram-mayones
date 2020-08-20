@@ -30,7 +30,7 @@ export default async (ctx: Context) => {
   const answer = ctx.message.text;
 
   if (answer.includes('/') || answer.includes('@')) {
-    logAnswer('Answer should not be handled here');
+    logAnswer('Command and mention should not be handled here');
     return Promise.resolve();
   }
 
