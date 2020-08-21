@@ -38,9 +38,9 @@ async function processRightAnswer(ctx: Context, param: AnswerParam) {
 async function processSambungKataAnswer(ctx: Context, param: AnswerParam) {
   const { userAnswer, quiz } = param;
   const question = quiz.question;
-  const isMatch = userAnswer.substring(quiz.answer.length) === question;
+  const isMatch = userAnswer.substring(0, quiz.answer.length) === question;
   if (!isMatch) {
-    return ctx.replyWithMarkdown(`SOALNYA ${question}. Yang bener dong ~`);
+    return ctx.replyWithMarkdown(`SOALNYA *${question}*. Yang bener dong ~`);
   }
 
   const matchWord = findWord(userAnswer);
