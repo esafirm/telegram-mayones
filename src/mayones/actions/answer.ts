@@ -23,7 +23,7 @@ async function processWrongAnswer(ctx: Context) {
 }
 
 async function processRightAnswer(ctx: Context, param: AnswerParam) {
-  const { groupId } = param;
+  const { groupId, userAnswer } = param;
 
   ctx.reply('Yes jawaban kamu benar');
 
@@ -32,7 +32,7 @@ async function processRightAnswer(ctx: Context, param: AnswerParam) {
 
   return param.quiz.type === 'ANAGRAM'
     ? goToNextQuiz(ctx, data)
-    : goToNextSambung(ctx, data);
+    : goToNextSambung(ctx, data, userAnswer);
 }
 
 async function processSambungKataAnswer(ctx: Context, param: AnswerParam) {
@@ -53,7 +53,9 @@ async function processSambungKataAnswer(ctx: Context, param: AnswerParam) {
   }
 
   const matchWord = findWord(userAnswer);
-  if (matchWord != null) {
+  console.log('match word', matchWord);
+
+  if (matchWord) {
     return processRightAnswer(ctx, param);
   }
   return processWrongAnswer(ctx);

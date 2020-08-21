@@ -52,8 +52,14 @@ export async function goToNextQuiz(ctx: Context, session: QuizSession) {
   return ctx.replyWithMarkdown(`Ayo tebak ini kata apa? *${quiz.question}*`);
 }
 
-export async function goToNextSambung(ctx: Context, session: QuizSession) {
-  const baseWord = getRandomWord(() => true).toUpperCase();
+export async function goToNextSambung(
+  ctx: Context,
+  session: QuizSession,
+  passedBaseWord: string,
+) {
+  const baseWord = passedBaseWord
+    ? passedBaseWord
+    : getRandomWord(() => true).toUpperCase();
   const question = getLastLetter(baseWord);
 
   const quiz: SambungKataQuiz = {
