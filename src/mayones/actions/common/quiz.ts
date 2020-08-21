@@ -59,7 +59,7 @@ export async function goToNextSambung(
   passedBaseWord: string = '',
 ) {
   const baseWord = passedBaseWord
-    ? passedBaseWord
+    ? passedBaseWord.toUpperCase()
     : getRandomWord(() => true).toUpperCase();
   const question = getLastLetter(baseWord);
 
