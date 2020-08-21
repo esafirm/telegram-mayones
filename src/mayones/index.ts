@@ -69,6 +69,10 @@ bot.on('text', ctx => {
   return AdvancedAction(ctx);
 });
 
+bot.catch((err: any) => {
+  console.log('Bot Catch!', err);
+});
+
 exports.handler = async (event: { body: string }) => {
   try {
     await bot.handleUpdate(JSON.parse(event.body));
