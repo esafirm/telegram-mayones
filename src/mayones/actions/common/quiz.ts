@@ -49,7 +49,8 @@ export async function goToNextQuiz(ctx: Context, session: QuizSession) {
 
   await ctx.reply('Game dimulai!');
 
-  return ctx.replyWithMarkdown(`Ayo tebak ini kata apa? *${quiz.question}*`);
+  const message = `Ayo tebak ini kata apa? *${quiz.question}*`;
+  return ctx.replyWithMarkdown(message, Markup.forceReply().extra());
 }
 
 export async function goToNextSambung(
