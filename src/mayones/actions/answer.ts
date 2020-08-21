@@ -45,6 +45,7 @@ async function processSambungKataAnswer(ctx: Context, param: AnswerParam) {
 
   const matchWord = findWord(userAnswer);
   if (matchWord != null) {
+    return processRightAnswer(ctx, param);
   }
   return processWrongAnswer(ctx);
 }

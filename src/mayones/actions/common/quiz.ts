@@ -1,4 +1,4 @@
-import { Context } from 'telegraf';
+import { Context, Markup } from 'telegraf';
 import { getRandomWord, getTextArray } from '../../words';
 import { createQuestion, configStore } from '../../stores';
 import { SimpleQuiz, QuizSession, SambungKataQuiz } from '../../stores/types';
@@ -68,7 +68,7 @@ export async function goToNextSambung(ctx: Context, session: QuizSession) {
   const link = `https://kbbi.kemdikbud.go.id/entri/${baseWord}`;
   const message = `Mulai: [${baseWord}](${link})\n\n*${question}*...\n\nSilakan mulai!`;
 
-  return ctx.replyWithMarkdown(message);
+  return ctx.replyWithMarkdown(message, Markup.forceReply().extra());
 }
 
 export async function findWord(word: string): Promise<string | null> {
