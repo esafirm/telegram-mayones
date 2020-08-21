@@ -62,7 +62,7 @@ async function processSambungKataAnswer(ctx: Context, param: AnswerParam) {
   if (matchWord) {
     return processRightAnswer(ctx, param);
   }
-  return processWrongAnswer(ctx);
+  return processWrongAnswer(ctx, param);
 }
 
 function processAnagramAnswer(ctx: Context, param: AnswerParam) {
@@ -70,7 +70,7 @@ function processAnagramAnswer(ctx: Context, param: AnswerParam) {
   if (quiz.answer === userAnswer.trim().toUpperCase()) {
     return processRightAnswer(ctx, param);
   }
-  return processWrongAnswer(ctx);
+  return processWrongAnswer(ctx, param);
 }
 
 function isAnagram(quiz: Quiz): boolean {
