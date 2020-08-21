@@ -39,11 +39,13 @@ async function processSambungKataAnswer(ctx: Context, param: AnswerParam) {
   const { userAnswer, quiz } = param;
   const question = quiz.question;
   const prefixOfAnswer = userAnswer
-    .substring(0, quiz.answer.length)
+    .substring(0, question.length)
     .toUpperCase()
     .trim();
 
-  console.log(`Comparing ${prefixOfAnswer} and ${question}`);
+  console.log(
+    `Comparing ${prefixOfAnswer} and ${question}. Answer: ${userAnswer}`,
+  );
 
   const isMatch = prefixOfAnswer === question;
   if (!isMatch) {
