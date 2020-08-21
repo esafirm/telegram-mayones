@@ -5,23 +5,60 @@ import {
   getLastSession,
   scoreStore,
 } from '../stores';
-import { goToNextQuiz } from './common/quiz';
+import { goToNextQuiz, findWord, goToNextSambung } from './common/quiz';
+import { Quiz } from '../stores/types';
+
+type AnswerParam = {
+  groupId: number;
+  userAnswer: string;
+  quiz: Quiz;
+};
 
 function logAnswer(log: string) {
   console.log(`Answer mode => ${log}`);
 }
 
-async function processRightAnswer(ctx: Context, groupId: number) {
-  ctx.reply('Yes jawaban kamu benar');
-
-  const lastSession = await getLastSession(groupId);
-  await scoreStore.giveScore(ctx.from, lastSession.data);
-
-  return goToNextQuiz(ctx, lastSession.data);
-}
-
 async function processWrongAnswer(ctx: Context) {
   return ctx.reply('Jawaban kamu masih salah tuh!');
+}
+
+async function processRightAnswer(ctx: Context, param: AnswerParam) {
+  const { groupId } = param;
+
+  ctx.reply('Yes jawaban kamu benar');
+
+  const { data } = await getLastSession(groupId);
+  await scoreStore.giveScore(ctx.from, data);
+
+  return param.quiz.type === 'ANAGRAM'
+    ? goToNextQuiz(ctx, data)
+    : goToNextSambung(ctx, data);
+}
+
+async function processSambungKataAnswer(ctx: Context, param: AnswerParam) {
+  const { userAnswer, quiz } = param;
+  const question = quiz.question;
+  const isMatch = userAnswer.substring(quiz.answer.length) === question;
+  if (!isMatch) {
+    return ctx.replyWithMarkdown(`SOALNYA ${question}. Yang bener dong ~`);
+  }
+
+  const matchWord = findWord(userAnswer);
+  if (matchWord != null) {
+  }
+  return processWrongAnswer(ctx);
+}
+
+function processAnagramAnswer(ctx: Context, param: AnswerParam) {
+  const { userAnswer, quiz } = param;
+  if (quiz.answer === userAnswer.trim().toUpperCase()) {
+    return processRightAnswer(ctx, param);
+  }
+  return processWrongAnswer(ctx);
+}
+
+function isAnagram(quiz: Quiz): boolean {
+  return quiz.type == 'ANAGRAM';
 }
 
 export default async (ctx: Context) => {
@@ -44,8 +81,14 @@ export default async (ctx: Context) => {
   }
 
   const lastQuestion = await getLastQuestion(groupId);
-  if (lastQuestion.data.answer === answer.trim().toUpperCase()) {
-    return processRightAnswer(ctx, groupId);
+  const param: AnswerParam = {
+    groupId: groupId,
+    userAnswer: answer,
+    quiz: lastQuestion.data,
+  };
+
+  if (isAnagram(lastQuestion.data)) {
+    return processAnagramAnswer(ctx, param);
   }
-  return processWrongAnswer(ctx);
+  return processSambungKataAnswer(ctx, param);
 };

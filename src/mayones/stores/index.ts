@@ -7,8 +7,9 @@ import {
   Room,
   QuizSession,
   SimpleQuiz,
-  Quiz,
+  AnagramQuiz,
   GameType,
+  Quiz,
 } from './types';
 import { sessionId } from '../actions/common/utils';
 
@@ -90,13 +91,15 @@ export async function createSession(
   );
 }
 
-export async function createQuestion(session: QuizSession, quiz: SimpleQuiz) {
+export async function createQuestion(
+  session: QuizSession,
+  simpleQuiz: SimpleQuiz,
+) {
   return client.query(
     q.Create(q.Collection(Collections.Quiz), {
       data: {
         sessionId: sessionId(session),
-        answer: quiz.answer,
-        question: quiz.question,
+        ...simpleQuiz,
       },
     }),
   );

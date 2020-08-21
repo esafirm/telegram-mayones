@@ -1,4 +1,4 @@
-import { User } from 'telegraf/typings/telegram-types';
+import { User, Game } from 'telegraf/typings/telegram-types';
 
 export const Indexes = {
   UserIdIndex: 'UserIdIndex',
@@ -40,17 +40,20 @@ export type QuizSession = {
 };
 
 export type SambungKataQuiz = {
-  sesionId: string;
   question: string;
   baseWord: string;
   answer: string;
+  type: GameType;
 };
 
-export type Quiz = {
+export type AnagramQuiz = {
   sessionId: string;
   question: string;
   answer: string;
+  type: GameType;
 };
+
+export type Quiz = SambungKataQuiz | AnagramQuiz;
 
 export type SimpleQuiz = {
   question: string;

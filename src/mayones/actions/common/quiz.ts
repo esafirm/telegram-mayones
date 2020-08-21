@@ -1,8 +1,7 @@
 import { Context } from 'telegraf';
-import { getRandomWord } from '../../words';
+import { getRandomWord, getTextArray } from '../../words';
 import { createQuestion, configStore } from '../../stores';
 import { SimpleQuiz, QuizSession, SambungKataQuiz } from '../../stores/types';
-import { sessionId } from './utils';
 
 function shuffleWord(word: string) {
   return word
@@ -60,13 +59,19 @@ export async function goToNextSambung(ctx: Context, session: QuizSession) {
   const quiz: SambungKataQuiz = {
     question: question,
     baseWord: baseWord,
-    sesionId: sessionId(session),
     answer: '',
+    type: 'SAMBUNG',
   };
 
   await createQuestion(session, quiz);
 
-  const message = `Mulai: [${baseWord}](http://kbbi.kamus.pelajar.id/arti-kata/${baseWord})\n\n*${question}*...\n\nSilakan mulai!`;
+  const link = `https://kbbi.kemdikbud.go.id/entri/${baseWord}`;
+  const message = `Mulai: [${baseWord}](${link})\n\n*${question}*...\n\nSilakan mulai!`;
 
   return ctx.replyWithMarkdown(message);
+}
+
+export async function findWord(word: string): Promise<string | null> {
+  const lowerCaseWord = word.toLowerCase();
+  return getTextArray().find(text => text === lowerCaseWord);
 }
