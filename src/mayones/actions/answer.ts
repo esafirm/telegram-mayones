@@ -38,7 +38,14 @@ async function processRightAnswer(ctx: Context, param: AnswerParam) {
 async function processSambungKataAnswer(ctx: Context, param: AnswerParam) {
   const { userAnswer, quiz } = param;
   const question = quiz.question;
-  const isMatch = userAnswer.substring(0, quiz.answer.length) === question;
+  const prefixOfAnswer = userAnswer
+    .substring(0, quiz.answer.length)
+    .toUpperCase()
+    .trim();
+
+  console.log(`Comparing ${prefixOfAnswer} and ${question}`);
+
+  const isMatch = prefixOfAnswer === question;
   if (!isMatch) {
     return ctx.replyWithMarkdown(`SOALNYA *${question}*. Yang bener dong ~`);
   }
