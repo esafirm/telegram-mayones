@@ -7,7 +7,6 @@ import {
   Room,
   QuizSession,
   SimpleQuiz,
-  AnagramQuiz,
   GameType,
   Quiz,
 } from './types';

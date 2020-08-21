@@ -1,4 +1,4 @@
-import { User, Game } from 'telegraf/typings/telegram-types';
+import { User } from 'telegraf/typings/telegram-types';
 
 export const Indexes = {
   UserIdIndex: 'UserIdIndex',
