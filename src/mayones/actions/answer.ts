@@ -52,7 +52,7 @@ async function processSambungKataAnswer(ctx: Context, param: AnswerParam) {
     return ctx.replyWithMarkdown(`SOALNYA *${question}*. Yang bener dong ~`);
   }
 
-  const matchWord = findWord(userAnswer);
+  const matchWord = await findWord(userAnswer);
   console.log('match word', matchWord);
 
   if (matchWord) {
