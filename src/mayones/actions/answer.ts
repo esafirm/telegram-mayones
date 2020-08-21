@@ -22,7 +22,7 @@ async function processWrongAnswer(ctx: Context, param: AnswerParam) {
   if (isAnagram(param.quiz)) {
     return ctx.reply('Jawaban kamu masih salah tuh!');
   }
-  const message = `🤬 GA ADA KATA *${param.userAnswer}\n\n Harus dimulai dari *${param.quiz.question}*`;
+  const message = `🤬 GA ADA KATA *${param.userAnswer}*\n\n Harus dimulai dari *${param.quiz.question}*`;
   return ctx.replyWithMarkdown(message, Markup.forceReply().extra());
 }
 
