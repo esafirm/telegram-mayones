@@ -1,4 +1,4 @@
-import { Context } from 'telegraf';
+import { Context, Markup } from 'telegraf';
 import {
   getGameRoom,
   getLastQuestion,
@@ -18,8 +18,12 @@ function logAnswer(log: string) {
   console.log(`Answer mode => ${log}`);
 }
 
-async function processWrongAnswer(ctx: Context) {
-  return ctx.reply('Jawaban kamu masih salah tuh!');
+async function processWrongAnswer(ctx: Context, param: AnswerParam) {
+  if (isAnagram(param.quiz)) {
+    return ctx.reply('Jawaban kamu masih salah tuh!');
+  }
+  const message = `🤬 GA ADA KATA *${param.userAnswer}\n\n Harus dimulai dari *${param.quiz.question}*`;
+  return ctx.replyWithMarkdown(message, Markup.forceReply().extra());
 }
 
 async function processRightAnswer(ctx: Context, param: AnswerParam) {
@@ -30,7 +34,7 @@ async function processRightAnswer(ctx: Context, param: AnswerParam) {
   const { data } = await getLastSession(groupId);
   await scoreStore.giveScore(ctx.from, data);
 
-  return param.quiz.type === 'ANAGRAM'
+  return isAnagram(param.quiz)
     ? goToNextQuiz(ctx, data)
     : goToNextSambung(ctx, data, userAnswer);
 }
