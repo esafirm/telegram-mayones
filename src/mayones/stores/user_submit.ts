@@ -44,7 +44,7 @@ export class UserSubmitStore {
       q.Update(
         q.Select(
           'ref',
-          q.Get(q.Match(q.Index(Indexes.ScoreIndex), currentSubmit.word)),
+          q.Get(q.Match(q.Index(Indexes.UserSubmit), currentSubmit.word)),
         ),
         {
           data: newData,
