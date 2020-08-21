@@ -56,7 +56,7 @@ export async function goToNextQuiz(ctx: Context, session: QuizSession) {
 export async function goToNextSambung(
   ctx: Context,
   session: QuizSession,
-  passedBaseWord: string,
+  passedBaseWord: string = '',
 ) {
   const baseWord = passedBaseWord
     ? passedBaseWord
