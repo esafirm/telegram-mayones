@@ -2,7 +2,7 @@ import * as FaundaDb from 'faunadb';
 import { User } from 'telegraf/typings/telegram-types';
 import { Indexes, Collections, FCollection, Score, QuizSession } from './types';
 import { sessionId } from '../actions/common/utils';
-import { FQL } from './comon_store';
+import { FQL } from './common_store';
 
 export default class ScoreStore {
   client: FaundaDb.Client;

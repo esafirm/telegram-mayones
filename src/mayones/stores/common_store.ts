@@ -29,4 +29,8 @@ export const FQL = {
       payload,
     );
   },
+
+  exist(index: string, match: string): FaundaDb.Expr {
+    return q.Exists(q.Match(q.Index(index), match));
+  },
 };

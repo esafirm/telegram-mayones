@@ -1,6 +1,6 @@
 import * as FaundaDb from 'faunadb';
 import { Indexes, FCollection, Collections, Room } from './types';
-import { FQL } from './comon_store';
+import { FQL } from './common_store';
 import { Promisify } from '../actions/common/utils';
 import { User } from 'telegraf/typings/telegram-types';
 

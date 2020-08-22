@@ -1,6 +1,6 @@
 import * as FaundaDb from 'faunadb';
 import { Indexes, FCollection, Collections } from './types';
-import { FQL } from './comon_store';
+import { FQL } from './common_store';
 import { Promisify } from '../actions/common/utils';
 
 export type UserSubmit = {

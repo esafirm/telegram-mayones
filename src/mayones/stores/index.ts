@@ -1,21 +1,9 @@
 import * as FaundaDb from 'faunadb';
-import { User } from 'telegraf/typings/telegram-types';
-import { Indexes, Collections, FCollection } from './types';
 
 const client = new FaundaDb.Client({
   secret: process.env.FAUNA_TOKEN,
   timeout: 2000,
 });
-const q = FaundaDb.query;
-
-export async function newUser(from: any): Promise<FCollection<User>> | null {
-  const isExist = await client.query(
-    q.Exists(q.Match(q.Index(Indexes.UserIdIndex), from.id)),
-  );
-  if (isExist) return Promise.resolve(null);
-
-  return client.query(q.Create(q.Collection(Collections.User), { data: from }));
-}
 
 /* New Format */
 /* ------------------------------------------ */
@@ -37,3 +25,6 @@ export const sessionStore = new SessionStore(client);
 
 import RoomStore from './room_store';
 export const roomStore = new RoomStore(client);
+
+import UserStore from './user_store';
+export const userStore = new UserStore(client);

@@ -1,4 +1,4 @@
-import { newUser, scoreStore, roomStore } from '../stores';
+import { scoreStore, roomStore, userStore } from '../stores';
 import { getFormattedCurrentScore } from '../actions/score';
 import { nextQuiz } from '../actions/common/common_quiz';
 
@@ -21,7 +21,8 @@ async function start() {
   /* User */
   /* ------------------------------------------ */
 
-  newUser({ id: 203544816 })
+  userStore
+    .createUser({ id: 203544816 })
     .then(res => {
       console.log('The user is:', res);
     })

@@ -6,7 +6,7 @@ import {
   GameType,
   Collections,
 } from './types';
-import { FQL } from './comon_store';
+import { FQL } from './common_store';
 
 export default class SessionStore {
   client: FaundaDb.Client;

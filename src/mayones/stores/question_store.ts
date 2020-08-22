@@ -8,7 +8,7 @@ import {
   Quiz,
 } from './types';
 import { sessionId } from '../actions/common/utils';
-import { FQL } from './comon_store';
+import { FQL } from './common_store';
 
 export default class QuestionStore {
   client: FaundaDb.Client;

@@ -1,12 +1,12 @@
 import { Context } from 'telegraf';
-import { newUser as createUserIfNotExist, roomStore } from '../stores';
+import { roomStore, userStore } from '../stores';
 import { User } from 'telegraf/typings/telegram-types';
 
 export default async (ctx: Context) => {
   const from = ctx.from as User;
   const groupId = ctx.chat.id;
 
-  await createUserIfNotExist(from);
+  await userStore.createUser(from);
 
   const room = await roomStore.getGameRoom(groupId);
 
