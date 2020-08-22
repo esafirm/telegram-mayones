@@ -1,6 +1,6 @@
 import { getGameRoom, newUser, scoreStore } from '../stores';
 import { getFormattedCurrentScore } from '../actions/score';
-import { nextQuiz } from '../actions/common/quiz';
+import { nextQuiz } from '../actions/common/common_quiz';
 
 async function start() {
   /* Quiz */

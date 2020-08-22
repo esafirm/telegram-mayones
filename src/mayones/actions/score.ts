@@ -1,9 +1,9 @@
-import { getLastSession, scoreStore } from '../stores';
+import { scoreStore, sessionStore } from '../stores';
 import { Context } from 'telegraf';
 import { sessionId } from './common/utils';
 
 async function getCurrentScore(groupId: number) {
-  const { data } = await getLastSession(groupId);
+  const { data } = await sessionStore.findSessionByGroupId(groupId);
   return scoreStore.findOrCreateScore(sessionId(data));
 }
 

@@ -1,16 +1,6 @@
 import * as FaundaDb from 'faunadb';
 import { User } from 'telegraf/typings/telegram-types';
-import {
-  Indexes,
-  Collections,
-  FCollection,
-  Room,
-  QuizSession,
-  SimpleQuiz,
-  GameType,
-  Quiz,
-} from './types';
-import { sessionId } from '../actions/common/utils';
+import { Indexes, Collections, FCollection, Room } from './types';
 
 const client = new FaundaDb.Client({
   secret: process.env.FAUNA_TOKEN,
@@ -75,54 +65,6 @@ export async function setGameRoomActive(roomId: number, isActive: boolean) {
   );
 }
 
-export async function createSession(
-  roomId: number,
-  gameType: GameType,
-): Promise<FCollection<QuizSession>> {
-  return client.query(
-    q.Create(q.Collection(Collections.Session), {
-      data: {
-        roomId: roomId,
-        session: Date.now(),
-        gameType: gameType,
-      },
-    }),
-  );
-}
-
-export async function createQuestion(
-  session: QuizSession,
-  simpleQuiz: SimpleQuiz,
-) {
-  return client.query(
-    q.Create(q.Collection(Collections.Quiz), {
-      data: {
-        sessionId: sessionId(session),
-        ...simpleQuiz,
-      },
-    }),
-  );
-}
-
-export function getLastSession(
-  groupId: number,
-): Promise<FCollection<QuizSession>> {
-  return client.query(
-    q.Get(q.Match(q.Index(Indexes.LastSessionIndex), groupId)),
-  );
-}
-
-export async function getLastQuestion(
-  groupId: number,
-): Promise<FCollection<Quiz>> {
-  console.log('Get last session for', groupId);
-
-  const lastSession = await getLastSession(groupId);
-  const sId = sessionId(lastSession.data);
-  console.log('Get last question for', sId);
-  return client.query(q.Get(q.Match(q.Index(Indexes.LastQuestionIndex), sId)));
-}
-
 /* Queries */
 /* ------------------------------------------ */
 
@@ -141,3 +83,9 @@ export const configStore = new ConfigStore(client);
 
 import { UserSubmitStore } from './user_submit';
 export const userSubmitStore = new UserSubmitStore(client);
+
+import QuestionStore from './question';
+export const questionStore = new QuestionStore(client);
+
+import SessionStore from './session_store';
+export const sessionStore = new SessionStore(client);

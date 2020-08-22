@@ -1,7 +1,13 @@
 import { Context, Markup } from 'telegraf';
 import { getRandomWord, getTextArray } from '../../words';
-import { createQuestion, configStore } from '../../stores';
-import { SimpleQuiz, QuizSession, SambungKataQuiz } from '../../stores/types';
+import { configStore, questionStore, sessionStore } from '../../stores';
+import {
+  SimpleQuiz,
+  QuizSession,
+  SambungKataQuiz,
+  FCollection,
+  Quiz,
+} from '../../stores/types';
 
 function shuffleWord(word: string) {
   return word
@@ -45,7 +51,7 @@ export async function nextQuiz(): Promise<SimpleQuiz> {
 
 export async function goToNextQuiz(ctx: Context, session: QuizSession) {
   const quiz = await nextQuiz();
-  await createQuestion(session, quiz);
+  await questionStore.createQuestion(session, quiz);
 
   await ctx.reply('Game dimulai!');
 
@@ -70,7 +76,7 @@ export async function goToNextSambung(
     type: 'SAMBUNG',
   };
 
-  await createQuestion(session, quiz);
+  await questionStore.createQuestion(session, quiz);
 
   const link = `https://kbbi.kemdikbud.go.id/entri/${baseWord}`;
   const message = `Mulai: [${baseWord}](${link})\n\n*${question}*...\n\nSilakan mulai!`;
@@ -81,4 +87,11 @@ export async function goToNextSambung(
 export async function findWord(word: string): Promise<string | null> {
   const lowerCaseWord = word.toLowerCase();
   return getTextArray().find(text => text === lowerCaseWord);
+}
+
+export async function getLastQuestion(
+  groupId: number,
+): Promise<FCollection<Quiz>> {
+  const lastSession = await sessionStore.findSessionByGroupId(groupId);
+  return questionStore.findQuestion(lastSession.data);
 }

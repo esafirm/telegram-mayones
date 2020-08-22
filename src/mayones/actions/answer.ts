@@ -1,11 +1,11 @@
 import { Context, Markup } from 'telegraf';
+import { getGameRoom, scoreStore, sessionStore } from '../stores';
 import {
-  getGameRoom,
+  goToNextQuiz,
+  findWord,
+  goToNextSambung,
   getLastQuestion,
-  getLastSession,
-  scoreStore,
-} from '../stores';
-import { goToNextQuiz, findWord, goToNextSambung } from './common/quiz';
+} from './common/common_quiz';
 import { Quiz } from '../stores/types';
 
 type AnswerParam = {
@@ -31,7 +31,7 @@ async function processRightAnswer(ctx: Context, param: AnswerParam) {
 
   ctx.reply('Yes jawaban kamu benar');
 
-  const { data } = await getLastSession(groupId);
+  const { data } = await sessionStore.findSessionByGroupId(groupId);
   await scoreStore.giveScore(ctx.from, data);
 
   return isAnagram(param.quiz)

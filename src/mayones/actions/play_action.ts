@@ -1,6 +1,6 @@
 import { Context } from 'telegraf';
-import { getGameRoom, setGameRoomActive, createSession } from '../stores';
-import { goToNextQuiz } from './common/quiz';
+import { getGameRoom, setGameRoomActive, sessionStore } from '../stores';
+import { goToNextQuiz } from './common/common_quiz';
 
 const MINMUM_PLAYER = 2;
 
@@ -19,7 +19,7 @@ export default async (ctx: Context) => {
   }
 
   await setGameRoomActive(groupId, true);
-  const session = await createSession(groupId, 'ANAGRAM');
+  const session = await sessionStore.createSession(groupId, 'ANAGRAM');
 
   return goToNextQuiz(ctx, session.data);
 };
