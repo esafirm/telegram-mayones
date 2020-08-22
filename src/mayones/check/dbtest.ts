@@ -6,8 +6,12 @@ async function start() {
   /* Quiz */
   /* ------------------------------------------ */
 
-  const nQuiz = await nextQuiz();
-  console.log('Next Quiz:', nQuiz);
+  try {
+    const nQuiz = await nextQuiz();
+    console.log('Next Quiz:', nQuiz);
+  } catch (err) {
+    console.log('Next Quiz Error:', err);
+  }
 
   /* Room */
   /* ------------------------------------------ */
