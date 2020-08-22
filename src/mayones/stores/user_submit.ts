@@ -1,7 +1,7 @@
 import * as FaundaDb from 'faunadb';
 import { Indexes, FCollection, Collections } from './types';
-
-const q = FaundaDb.query;
+import { FQL } from './comon_store';
+import { Promisify } from '../actions/common/utils';
 
 export type UserSubmit = {
   word: string;
@@ -16,17 +16,14 @@ export class UserSubmitStore {
   }
 
   getUserSubmit(word: string): Promise<FCollection<UserSubmit>> {
-    return new Promise(resolve => {
-      this.client
-        .query(q.Get(q.Match(q.Index(Indexes.UserSubmit), word)))
-        .then(res => resolve(res as FCollection<UserSubmit>))
-        .catch(() => resolve(null));
-    });
+    return Promisify.ignoreError(
+      this.client.query(FQL.find(Indexes.UserSubmit, word)),
+    );
   }
 
   private createUserSubmit(word: string) {
     this.client.query(
-      q.Create(q.Collection(Collections.UserSubmit), {
+      FQL.create(Collections.UserSubmit, {
         data: {
           word: word,
           count: 1,
@@ -41,11 +38,11 @@ export class UserSubmitStore {
       count: currentSubmit.count + 1,
     };
     this.client.query(
-      q.Update(
-        q.Select(
-          'ref',
-          q.Get(q.Match(q.Index(Indexes.UserSubmit), currentSubmit.word)),
-        ),
+      FQL.updateBy(
+        {
+          index: Indexes.UserSubmit,
+          match: currentSubmit.word,
+        },
         {
           data: newData,
         },

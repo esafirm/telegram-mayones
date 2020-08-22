@@ -6,8 +6,7 @@ import {
   GameType,
   Collections,
 } from './types';
-
-const q = FaundaDb.query;
+import { FQL } from './comon_store';
 
 export default class SessionStore {
   client: FaundaDb.Client;
@@ -19,9 +18,7 @@ export default class SessionStore {
   async findSessionByGroupId(
     groupId: number,
   ): Promise<FCollection<QuizSession>> {
-    return this.client.query(
-      q.Get(q.Match(q.Index(Indexes.LastSessionIndex), groupId)),
-    );
+    return this.client.query(FQL.find(Indexes.LastSessionIndex, groupId));
   }
 
   async createSession(
@@ -29,7 +26,7 @@ export default class SessionStore {
     gameType: GameType,
   ): Promise<FCollection<QuizSession>> {
     return this.client.query(
-      q.Create(q.Collection(Collections.Session), {
+      FQL.create(Collections.Session, {
         data: {
           roomId: roomId,
           session: Date.now(),

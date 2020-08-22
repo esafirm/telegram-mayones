@@ -1,7 +1,6 @@
 import * as FaundaDb from 'faunadb';
 import { Indexes, FCollection } from './types';
-
-const q = FaundaDb.query;
+import { FQL } from './comon_store';
 
 export type Configuration = {
   level: number;
@@ -21,6 +20,6 @@ export class ConfigStore {
   }
 
   getConfiguration(): Promise<FCollection<Configuration>> {
-    return this.client.query(q.Get(q.Match(q.Index(Indexes.Configuration))));
+    return this.client.query(FQL.findFirst(Indexes.Configuration));
   }
 }

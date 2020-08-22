@@ -75,16 +75,16 @@ function selectRoomById(roomId: number) {
 /* New Format */
 /* ------------------------------------------ */
 
-import ScoreStore from './score';
+import ScoreStore from './score_store';
 export const scoreStore = new ScoreStore(client);
 
-import { ConfigStore } from './config';
+import { ConfigStore } from './config_store';
 export const configStore = new ConfigStore(client);
 
 import { UserSubmitStore } from './user_submit';
 export const userSubmitStore = new UserSubmitStore(client);
 
-import QuestionStore from './question';
+import QuestionStore from './question_store';
 export const questionStore = new QuestionStore(client);
 
 import SessionStore from './session_store';

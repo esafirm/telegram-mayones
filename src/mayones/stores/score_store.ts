@@ -2,8 +2,7 @@ import * as FaundaDb from 'faunadb';
 import { User } from 'telegraf/typings/telegram-types';
 import { Indexes, Collections, FCollection, Score, QuizSession } from './types';
 import { sessionId } from '../actions/common/utils';
-
-const q = FaundaDb.query;
+import { FQL } from './comon_store';
 
 export default class ScoreStore {
   client: FaundaDb.Client;
@@ -15,7 +14,7 @@ export default class ScoreStore {
   findScore(sessionId: string): Promise<FCollection<Score> | null> {
     return new Promise(resolve => {
       this.client
-        .query(q.Get(q.Match(q.Index(Indexes.ScoreIndex), sessionId)))
+        .query(FQL.find(Indexes.ScoreIndex, sessionId))
         .then(res => {
           resolve(res as FCollection<Score>);
         })
@@ -27,7 +26,7 @@ export default class ScoreStore {
 
   createScore(sessionId: string): Promise<FCollection<Score>> {
     return this.client.query(
-      q.Create(q.Collection(Collections.Score), {
+      FQL.create(Collections.Score, {
         data: {
           sessionId: sessionId,
           scores: {},
@@ -58,11 +57,11 @@ export default class ScoreStore {
     };
 
     return this.client.query(
-      q.Update(
-        q.Select(
-          'ref',
-          q.Get(q.Match(q.Index(Indexes.ScoreIndex), sessionId(session))),
-        ),
+      FQL.updateBy(
+        {
+          index: Indexes.ScoreIndex,
+          match: sessionId(session),
+        },
         {
           data: newScore,
         },

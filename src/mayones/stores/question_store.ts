@@ -8,8 +8,7 @@ import {
   Quiz,
 } from './types';
 import { sessionId } from '../actions/common/utils';
-
-const q = FaundaDb.query;
+import { FQL } from './comon_store';
 
 export default class QuestionStore {
   client: FaundaDb.Client;
@@ -20,7 +19,7 @@ export default class QuestionStore {
 
   async createQuestion(session: QuizSession, simpleQuiz: SimpleQuiz) {
     return this.client.query(
-      q.Create(q.Collection(Collections.Quiz), {
+      FQL.create(Collections.Quiz, {
         data: {
           sessionId: sessionId(session),
           ...simpleQuiz,
@@ -34,8 +33,6 @@ export default class QuestionStore {
   }
 
   async findQuestionBySessionId(sessionId: string): Promise<FCollection<Quiz>> {
-    return this.client.query(
-      q.Get(q.Match(q.Index(Indexes.LastQuestionIndex), sessionId)),
-    );
+    return this.client.query(FQL.find(Indexes.LastQuestionIndex, sessionId));
   }
 }
