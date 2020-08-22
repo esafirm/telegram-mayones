@@ -1,5 +1,5 @@
 import { Context, Markup } from 'telegraf';
-import { getGameRoom, scoreStore, sessionStore } from '../stores';
+import { scoreStore, sessionStore, roomStore } from '../stores';
 import {
   goToNextQuiz,
   findWord,
@@ -87,7 +87,7 @@ export default async (ctx: Context) => {
     return Promise.resolve();
   }
 
-  const room = await getGameRoom(groupId);
+  const room = await roomStore.getGameRoom(groupId);
 
   if (!room.data.active) {
     logAnswer('Game sedang tidak aktif');

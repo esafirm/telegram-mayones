@@ -1,5 +1,5 @@
 import { Context } from 'telegraf';
-import { getGameRoom, setGameRoomActive, sessionStore } from '../stores';
+import { sessionStore, roomStore } from '../stores';
 import { goToNextSambung } from './common/common_quiz';
 
 const MINMUM_PLAYER = 2;
@@ -10,7 +10,7 @@ export default async (ctx: Context) => {
 
   const isAdmin = from.username === '@esafirm';
 
-  const room = await getGameRoom(groupId);
+  const room = await roomStore.getGameRoom(groupId);
   if (!isAdmin && room.data.players.length < MINMUM_PLAYER) {
     return ctx.reply('Game bisa dijalankan dengan minimal peserta 2 orang');
   }
@@ -19,7 +19,7 @@ export default async (ctx: Context) => {
     return ctx.reply('Sedang ada sesi game yang aktif. Tunggu dulu ya ~');
   }
 
-  await setGameRoomActive(groupId, true);
+  await roomStore.setGameRoomActive(groupId, true);
   const session = await sessionStore.createSession(groupId, 'SAMBUNG');
 
   return goToNextSambung(ctx, session.data);

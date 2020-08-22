@@ -1,11 +1,11 @@
 import { Context } from 'telegraf';
-import { setGameRoomActive } from '../stores';
+import { roomStore } from '../stores';
 
 export default async (ctx: Context) => {
   const { chat } = ctx;
   const groupId = chat.id;
 
-  await setGameRoomActive(groupId, false);
+  await roomStore.setGameRoomActive(groupId, false);
 
   return ctx.replyWithMarkdown('*GAME OVER*');
 };

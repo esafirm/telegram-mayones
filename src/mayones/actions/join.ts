@@ -1,12 +1,5 @@
 import { Context } from 'telegraf';
-
-import {
-  newUser as createUserIfNotExist,
-  createGameRoom,
-  getGameRoom,
-  setPlayerToRoom,
-} from '../stores';
-
+import { newUser as createUserIfNotExist, roomStore } from '../stores';
 import { User } from 'telegraf/typings/telegram-types';
 
 export default async (ctx: Context) => {
@@ -15,10 +8,10 @@ export default async (ctx: Context) => {
 
   await createUserIfNotExist(from);
 
-  const room = await getGameRoom(groupId);
+  const room = await roomStore.getGameRoom(groupId);
 
   if (room == null) {
-    await createGameRoom(groupId, from);
+    await roomStore.createGameRoom(groupId, from);
   }
 
   if (room.data.active) {
@@ -27,7 +20,7 @@ export default async (ctx: Context) => {
 
   const filtered = room.data.players.filter(p => p.id != from.id);
   const newPlayers = [...filtered, from];
-  await setPlayerToRoom(groupId, newPlayers);
+  await roomStore.setPlayerToRoom(groupId, newPlayers);
 
   return ctx.replyWithMarkdown(createMessage(newPlayers));
 };

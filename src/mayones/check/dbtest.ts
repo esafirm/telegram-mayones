@@ -1,4 +1,4 @@
-import { getGameRoom, newUser, scoreStore } from '../stores';
+import { newUser, scoreStore, roomStore } from '../stores';
 import { getFormattedCurrentScore } from '../actions/score';
 import { nextQuiz } from '../actions/common/common_quiz';
 
@@ -12,8 +12,8 @@ async function start() {
   /* Room */
   /* ------------------------------------------ */
 
-  const room1 = await getGameRoom(1111);
-  const room2 = await getGameRoom(111);
+  const room1 = await roomStore.getGameRoom(1111);
+  const room2 = await roomStore.getGameRoom(111);
 
   console.log('Room1', room1);
   console.log('Room2', room2);
