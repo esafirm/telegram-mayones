@@ -7,7 +7,6 @@ import {
   getLastQuestion,
 } from './common/common_quiz';
 import { Quiz } from '../stores/types';
-import { platform } from 'os';
 import { User } from 'telegraf/typings/telegram-types';
 
 type AnswerParam = {
