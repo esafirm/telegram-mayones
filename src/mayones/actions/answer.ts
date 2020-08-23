@@ -101,6 +101,7 @@ export default async (ctx: Context) => {
     return Promise.resolve();
   }
 
+  // Check if the player that answer already join the session or not
   if (!isPlayerInTheRoom(players, from)) {
     logAnswer(`${from.first_name} is not in the room`);
     return Promise.resolve();
