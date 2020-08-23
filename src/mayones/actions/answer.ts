@@ -7,6 +7,8 @@ import {
   getLastQuestion,
 } from './common/common_quiz';
 import { Quiz } from '../stores/types';
+import { platform } from 'os';
+import { User } from 'telegraf/typings/telegram-types';
 
 type AnswerParam = {
   groupId: number;
@@ -77,8 +79,12 @@ function isAnagram(quiz: Quiz): boolean {
   return quiz.type == 'ANAGRAM';
 }
 
+function isPlayerInTheRoom(players: Array<User>, from: User) {
+  return players.some(p => p.id == from.id);
+}
+
 export default async (ctx: Context) => {
-  const { chat } = ctx;
+  const { chat, from } = ctx;
   const groupId = chat.id;
   const answer = ctx.message.text;
 
@@ -88,13 +94,19 @@ export default async (ctx: Context) => {
   }
 
   const room = await roomStore.getGameRoom(groupId);
+  const { active, players } = room.data;
 
-  if (!room.data.active) {
-    logAnswer('Game sedang tidak aktif');
+  if (!active) {
+    logAnswer(`Game is not active: ${room.data.roomId}`);
     return Promise.resolve();
-  } else {
-    logAnswer(`Menjawab ${answer}`);
   }
+
+  if (!isPlayerInTheRoom(players, from)) {
+    logAnswer(`${from.first_name} is not in the room`);
+    return Promise.resolve();
+  }
+
+  logAnswer(`Menjawab ${answer}`);
 
   const lastQuestion = await getLastQuestion(groupId);
   const param: AnswerParam = {

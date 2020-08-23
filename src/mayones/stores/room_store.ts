@@ -46,6 +46,13 @@ export default class RoomStore {
   }
 
   async setGameRoomActive(roomId: number, isActive: boolean) {
+    const payload = isActive
+      ? { active: true }
+      : {
+          active: false,
+          players: [],
+        };
+
     return this.client.query(
       FQL.updateBy(
         {
@@ -53,9 +60,7 @@ export default class RoomStore {
           match: roomId,
         },
         {
-          data: {
-            active: isActive,
-          },
+          data: payload,
         },
       ),
     );
